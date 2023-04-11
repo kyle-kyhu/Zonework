@@ -1,0 +1,14 @@
+{% extends 'zonework_app/base.html' %}
+
+{% block title %}
+Learning Tab
+{% endblock %}
+
+{% block content %}
+    <h1>Learning Tab</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Add Learning Item</button>
+    </form>
+{% endblock %}

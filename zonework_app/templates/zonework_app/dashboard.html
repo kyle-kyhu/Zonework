@@ -1,0 +1,14 @@
+{% extends 'zonework_app/base.html' %}
+
+{% block title %}
+Dashboard
+{% endblock %}
+
+{% block content %}
+    <h1>Dashboard</h1>
+    <ul>
+        {% for item in learning_items %}
+            <li>{{ item.title }} - {% if item.in_class %}In-class{% else %}Out-of-class{% endif %}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
