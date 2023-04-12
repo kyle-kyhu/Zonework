@@ -1,17 +1,30 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Zonework{% endblock %}</title>
+
+<!-- here is the nav bar -->
+<!--<nav>-->
+<!--  <ul>-->
+<!--    <li><a href="{% url 'learning_tab' %}">Learning</a></li>-->
+<!--    <li><a href="{% url 'dashboard' %}">dashboard</a></li>-->
+<!--    <li><a href="{% url 'services' %}">Services</a></li>-->
+<!--    <li><a href="{% url 'contact' %}">Contact</a></li>-->
+<!--  </ul>-->
+<!--</nav>-->
+
 </head>
 <body>
     <header>
         <!-- Add your site header here -->
+        {% block nav %}{% include 'zonework_app/nav_bar.html' %} {% endblock nav %}
     </header>
+
     <main>
-        {% block content %}
-        {% endblock %}
+        {% block content %}  {% endblock %}
     </main>
     <footer>
         <!-- Add your site footer here -->

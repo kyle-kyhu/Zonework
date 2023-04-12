@@ -5,7 +5,7 @@ from django.contrib.auth import login as auth_login, authenticate
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.decorators import login_required
 #this is fore base.html testing
-from django.http import HttpResponse
+
 # Create your views here.
 
 @login_required
@@ -50,5 +50,8 @@ def register(request):
         form = UserCreationForm()
     return render(request, 'zonework_app/register.html', {'form': form})
 
-def base(request):
-    return render(request, 'zonework_app/base.html', )
+def test(request):
+    return render(request, 'zonework_app/test.html')
+
+def nav_bar(request):
+    return render(request, 'zonework_app/nav_bar.html')
