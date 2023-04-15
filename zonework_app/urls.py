@@ -12,6 +12,5 @@ urlpatterns = [
     path('dashboard/', views.dashboard, name="dashboard"),
     path('register/', views.register, name="register"),
     path('test/', views.test, name="test"),
-    # new
-    path('nav_bar/', views.nav_bar, name="nav_bar"),
+    path('index/', views.index, name="index"),
 ]

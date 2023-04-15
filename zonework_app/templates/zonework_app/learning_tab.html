@@ -5,10 +5,28 @@ Learning Tab
 {% endblock %}
 
 {% block content %}
+
     <h1>Learning Tab</h1>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Add Learning Item</button>
     </form>
+
+<!-- here is the layout of the learning form.
+Do I need to add this to the forms.py file under meta? -->
+
+<br/>
+<div class="container">
+    <form>
+        <table>
+          <tr>
+            <td><button><span>&#10003;</span> I understand</button></td>
+            <td><button><span>?</span> Not Yet</button></td>
+            <td><input type="text" placeholder="enter description"></td>
+          </tr>
+        </table>
+    </form>
+</div>
+
 {% endblock %}

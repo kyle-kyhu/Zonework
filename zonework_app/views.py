@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Item
+from .models import Item, Student
 from .forms import ItemForm
 from django.contrib.auth import login as auth_login, authenticate
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
@@ -34,22 +34,28 @@ def login(request):
         if form.is_valid():
             user = form.get_user()
             auth_login(request, user)
-            return redirect('dashboard')
+            return redirect('zonework_app/dashboard.html')
     else:
         form = AuthenticationForm()
-    return render(request, 'zonework_app/login.html', {'form': form})
+    return render(request, 'zonework_app/login', {'form': form})
 
 def register(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
+            student = Student(user=user)
+            student.save()
             # You can create a Student instance related to the User here.
-            return redirect('login')
+            return redirect('zonework_app/login')
     else:
         form = UserCreationForm()
     return render(request, 'zonework_app/register.html', {'form': form})
 
+def index(request):
+    return render(request, 'zonework_app/index.html')
+
+# here are tests
 def test(request):
     return render(request, 'zonework_app/test.html')
 
