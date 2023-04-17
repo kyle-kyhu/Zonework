@@ -120,3 +120,6 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # add this as views are not rendering
 LOGIN_URL = '/login/'
+
+#ensure that users are redirect to the dashboard
+LOGIN_REDIRECT_URL = 'dashboard'

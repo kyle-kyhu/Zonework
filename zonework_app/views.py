@@ -4,7 +4,9 @@ from .forms import ItemForm
 from django.contrib.auth import login as auth_login, authenticate
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.decorators import login_required
-#this is fore base.html testing
+# this one is new as of 4/16/23
+from django.contrib.auth.views import LoginView
+
 
 # Create your views here.
 
@@ -37,7 +39,7 @@ def login(request):
             return redirect('zonework_app/dashboard.html')
     else:
         form = AuthenticationForm()
-    return render(request, 'zonework_app/login', {'form': form})
+    return render(request, 'zonework_app/login.html', {'form': form})
 
 def register(request):
     if request.method == 'POST':
