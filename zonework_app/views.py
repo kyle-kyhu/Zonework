@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from .models import Item, Student
 from .forms import ItemForm
+from django.contrib import messages
+
 from django.contrib.auth import login as auth_login, authenticate
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.decorators import login_required
@@ -13,9 +15,13 @@ from django.contrib.auth.views import LoginView
 @login_required
 #a list of all items belonging to a student
 def dashboard(request):
-    # query for items for the logged in student
-    items = Item.objects.filter(student=request.user.student)
+    # Get or create the student instance for the logged-in user
+    student, created = Student.objects.get_or_create(user=request.user)
+
+    # Query for items for the logged in student
+    items = Item.objects.filter(student=student)
     return render(request, 'zonework_app/dashboard.html', {'items': items})
+
 
 @login_required
 def learning_tab(request):
@@ -30,16 +36,21 @@ def learning_tab(request):
         form = ItemForm()
     return render(request, 'zonework_app/learning_tab.html', {'form':form})
 
-def login(request):
+from django.urls import reverse
+
+def login_view(request):
     if request.method == 'POST':
-        form = AuthenticationForm(request, data=request.POST)
-        if form.is_valid():
-            user = form.get_user()
-            auth_login(request, user)
-            return redirect('zonework_app/dashboard.html')
-    else:
-        form = AuthenticationForm()
-    return render(request, 'zonework_app/login.html', {'form': form})
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            auth_login(request, user)  # Use auth_login instead of login
+            return redirect(reverse('zonework_app:dashboard'))  # Use reverse with the namespaced view name
+        else:
+            # Add an error message to display on the login page if the authentication fails
+            messages.error(request, 'Invalid username or password')
+    return render(request, 'zonework_app/login.html')
+
 
 def register(request):
     if request.method == 'POST':

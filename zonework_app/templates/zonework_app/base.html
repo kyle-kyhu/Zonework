@@ -36,6 +36,16 @@
 
     </header>
 
+	{% if messages %}
+    <div class="container mt-3">
+        <ul class="messages list-unstyled">
+            {% for message in messages %}
+            <li{% if message.tags %} class="alert alert-{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
     <main>
 		<div class="container">
         {% block content %}
