@@ -9,7 +9,7 @@ Learning Tab
     <h1>Learning Tab</h1>
     <form method="POST">
         {% csrf_token %}
-        {{ form.as_p }}
+        {{ form.as_p }}  <!-- This will render the form fields as a series of paragraphs -->
         <button type="submit">Add Learning Item</button>
     </form>
 

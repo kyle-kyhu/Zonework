@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Item, Student
+from .models import LearningItem, Student
 from .forms import ItemForm
 from django.contrib import messages
 
@@ -13,13 +13,13 @@ from django.contrib.auth.views import LoginView
 # Create your views here.
 
 @login_required
-#a list of all items belonging to a student
 def dashboard(request):
-    # Get or create the student instance for the logged-in user
     student, created = Student.objects.get_or_create(user=request.user)
+    items = LearningItem.objects.filter(student=student)
 
-    # Query for items for the logged in student
-    items = Item.objects.filter(student=student)
+    # Print items for debugging
+    # print(items)
+
     return render(request, 'zonework_app/dashboard.html', {'items': items})
 
 
@@ -31,7 +31,7 @@ def learning_tab(request):
             new_item = form.save(commit=False)
             new_item.student = request.user.student
             new_item.save()
-            return redirect("dashboard")
+            return redirect("zonework_app:dashboard")
     else:
         form = ItemForm()
     return render(request, 'zonework_app/learning_tab.html', {'form':form})

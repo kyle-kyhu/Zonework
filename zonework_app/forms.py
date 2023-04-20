@@ -1,20 +1,13 @@
 from django import forms
-from .models import LearningItem, Item
+from .models import LearningItem
 
 class ItemForm(forms.ModelForm):
     class Meta:
         model = LearningItem
         fields = [
             "title",
-            "in_class",
+            'completed',
+            'description',
+            'entry_date'
         ]
 
-class ItemForm(forms.ModelForm):
-    class Meta:
-        model = Item
-        fields = [
-            "description",
-            "completed",
-            "entry_date",
-            "student",
-            ]

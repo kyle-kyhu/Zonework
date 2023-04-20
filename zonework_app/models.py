@@ -10,18 +10,16 @@ class Student(models.Model):
     #school = models.ForeignKey(School, on_delete=models.CASCADE)
     class_names = models.TextField()
 
-class Item(models.Model):
-    completed = models.BooleanField(False)
+class LearningItem(models.Model):
+    title = models.CharField(max_length=200)
+    completed = models.BooleanField(default=False)
     description = models.TextField(max_length=200)
     entry_date = models.DateTimeField(default=timezone.now())
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
 
-class LearningItem(models.Model):
-    completed = models.BooleanField(False)
-    entry_date = models.DateTimeField(default=timezone.now())
-    student = models.ForeignKey(Student, on_delete=models.CASCADE)
-    title = models.TextField(max_length=200)
-    in_class = models.TextField(max_length=200)
+    def __str__(self):
+        return f"{self.title} - {'Completed' if self.completed else 'Not-Completed'} - {self.entry_date}"
+
 
 
 # if label and description are blank
