@@ -8,7 +8,8 @@ Dashboard
     <h1>Dashboard</h1>
     <table>
         {% for item in items.all %}
-            <li>{{ item.title }} - {% if item.completed %}Completed{% else %}Not Completed{% endif %} - {{ item.entry_date }}</li>
+            <li>{{ item.subject }} - {% if item.assessment %}Assessment{% else %}Not Assessment{% endif %} - {{ item.entry_date }}</li>
+            <li>{{ item.</li>
         {% endfor %}
     </table>
 {% endblock %}

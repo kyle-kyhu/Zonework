@@ -6,21 +6,22 @@ from django.contrib.auth.models import User
 
 class Student(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    address = models.TextField()
+    address = models.TextField(max_length=200)
     #school = models.ForeignKey(School, on_delete=models.CASCADE)
-    class_names = models.TextField()
+    class_names = models.TextField(max_length=200)
+
+# is this a good set up?
+# class Subject(models.Model):
+#     name = models.CharField(max_length=50)
+
 
 class LearningItem(models.Model):
-    title = models.CharField(max_length=200)
-    completed = models.BooleanField(default=False)
+    subject = models.CharField(max_length=200)
+    assessment = models.CharField(max_length=12)
     description = models.TextField(max_length=200)
-    entry_date = models.DateTimeField(default=timezone.now())
+    entry_date = models.DateTimeField(default=timezone.now)
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"{self.title} - {'Completed' if self.completed else 'Not-Completed'} - {self.entry_date}"
+        return f"{self.subject} - {'Completed' if self.assessment else 'Not-Completed'} - {self.entry_date}"
 
-
-
-# if label and description are blank
-# how do we not migrate them to DB?

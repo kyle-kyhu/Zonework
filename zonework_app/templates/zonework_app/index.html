@@ -4,9 +4,9 @@
   <h1>Welcome to Zonework</h1>
   <p>Zonework is a homework planning and to-do list service that helps students organize their learning items.</p>
 
-  {% if user.is_authenticated %}
-    <p><a href="{% url 'dashboard' %}">Go to Dashboard</a></p>
-  {% else %}
-    <p><a href="{% url 'login' %}">Login</a> or <a href="{% url 'register' %}">Register</a> to get started.</p>
+<!--  {% if user.is_authenticated %}-->
+    <p><a href="{% url 'zonework_app:dashboard_list' %}">Go to Dashboard</a></p>
+<!--  {% else %}-->
+    <p><a href="{% url 'zonework_app:login' %}">Login</a> or <a href="/register/">Register</a> to get started.</p>
   {% endif %}
 {% endblock %}

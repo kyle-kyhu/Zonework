@@ -5,9 +5,8 @@ class ItemForm(forms.ModelForm):
     class Meta:
         model = LearningItem
         fields = [
-            "title",
-            'completed',
+            "subject",
+            'assessment',
             'description',
             'entry_date'
         ]
-
