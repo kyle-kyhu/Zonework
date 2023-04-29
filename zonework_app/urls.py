@@ -21,9 +21,9 @@ app_name = 'zonework_app'
 # class based views
 urlpatterns = [
     path('index/', IndexView.as_view(), name='index'),
-    #path('', DashboardView.as_view(), name='dashboard'),
+    path('dashboard/', DashboardView.as_view(), name='dashboard'),
     path('learning/', LearningView.as_view(), name='learning_tab'),
     path('login/', LoginView.as_view(), name='login'),
     path('register/', RegisterView.as_view(), name='register'),
-    path('dashboard/', DashboardListView.as_view(), name='dashboard_list')
+    #path('dashboard/', DashboardListView.as_view(), name='dashboard_list')
 ]
