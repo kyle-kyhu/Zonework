@@ -6,3 +6,9 @@ This tool should help users:
 3. Work details can be communicated to mentors, community, etc
 4. Create a cadence of work via dashboard 
 5. Create scheduled recap for status updates
+
+This project will used as a group project.  
+
+To get started:
+- python manage.py runserver
+- copy and paste this url for the homepage.  http://127.0.0.1:8000/index/
