@@ -5,12 +5,14 @@ from django.urls import reverse_lazy
 from django.shortcuts import redirect, render
 from django.views.generic import View, ListView
 from .models import LearningItem, Student
-from .forms import ItemForm
+from .forms import ItemForm, MyLearningItem
+import requests
+
 
 
 # Create your views here.
 
-#@login_required
+#ç@login_required
 class DashboardView(View):
     template_name = 'zonework_app/dashboard.html'
 
@@ -25,7 +27,9 @@ class LearningView(View):
     template_name = 'zonework_app/learning_tab.html'
 
     def get(self, request):
-        form = ItemForm()
+        #form = ItemForm()
+        form = MyLearningItem()
+        print(form)
         return render(request, self.template_name, {'form': form})
 
     def post(self, request):
@@ -81,8 +85,8 @@ class DashboardListView(ListView):
     def get_queryset(self):
         student, created = Student.objects.get_or_create(user=self.request.user)
         queryset = LearningItem.objects.filter(student=student)
+        print(queryset)
         return queryset
-
 
 class IndexView(View):
     template_name = 'zonework_app/index.html'

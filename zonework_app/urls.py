@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path
 from . import views
-from .views import DashboardView, LearningView, LoginView, RegisterView, DashboardListView, IndexView
+from .views import LearningView, LoginView, RegisterView, IndexView, DashboardListView
 
 
 app_name = 'zonework_app'
@@ -20,10 +20,9 @@ app_name = 'zonework_app'
 
 # class based views
 urlpatterns = [
-    path('index/', IndexView.as_view(), name='index'),
-    path('dashboard/', DashboardView.as_view(), name='dashboard'),
+    path('', IndexView.as_view(), name='index'),
+    path('dashboard/', DashboardListView.as_view(), name='dashboard'),
     path('learning/', LearningView.as_view(), name='learning_tab'),
     path('login/', LoginView.as_view(), name='login'),
     path('register/', RegisterView.as_view(), name='register'),
-    #path('dashboard/', DashboardListView.as_view(), name='dashboard_list')
 ]
