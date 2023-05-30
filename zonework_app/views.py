@@ -1,97 +1,65 @@
-from django.contrib import messages
-from django.contrib.auth import authenticate, login
-from django.contrib.auth.forms import UserCreationForm
-from django.urls import reverse_lazy
-from django.shortcuts import redirect, render
-from django.views.generic import View, ListView
-from .models import LearningItem, Student
-from .forms import ItemForm, MyLearningItem
-import requests
-
+from django.shortcuts import render, redirect
+from .models import Item, Student
+from .forms import ItemForm
+from django.contrib.auth import login as auth_login, authenticate
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth.decorators import login_required
+# this one is new as of 4/16/23
+from django.contrib.auth.views import LoginView
 
 
 # Create your views here.
 
-#ç@login_required
-class DashboardView(View):
-    template_name = 'zonework_app/dashboard.html'
+@login_required
+#a list of all items belonging to a student
+def dashboard(request):
+    # query for items for the logged in student
+    items = Item.objects.filter(student=request.user.student)
+    return render(request, 'zonework_app/dashboard.html', {'items': items})
 
-    def get(self, request):
-        student, created = Student.objects.get_or_create(user=request.user)
-        items = LearningItem.objects.filter(student=student)
-        return render(request, self.template_name, {'items': items})
-
-
-#@login_required
-class LearningView(View):
-    template_name = 'zonework_app/learning_tab.html'
-
-    def get(self, request):
-        #form = ItemForm()
-        form = MyLearningItem()
-        print(form)
-        return render(request, self.template_name, {'form': form})
-
-    def post(self, request):
+@login_required
+def learning_tab(request):
+    if request.method == "POST":
         form = ItemForm(request.POST)
         if form.is_valid():
             new_item = form.save(commit=False)
             new_item.student = request.user.student
             new_item.save()
-            return redirect("zonework_app:dashboard")
-        else:
-            return render(request, self.template_name, {'form': form})
+            return redirect("dashboard")
+    else:
+        form = ItemForm()
+    return render(request, 'zonework_app/learning_tab.html', {'form':form})
 
-class LoginView(View):
-    template_name = 'zonework_app/login.html'
+def login(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            auth_login(request, user)
+            return redirect('zonework_app/dashboard.html')
+    else:
+        form = AuthenticationForm()
+    return render(request, 'zonework_app/login.html', {'form': form})
 
-    def get(self, request):
-        return render(request, self.template_name)
-
-    def post(self, request):
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-            return redirect(reverse_lazy('zonework_app:dashboard'))
-        else:
-            messages.error(request, 'Invalid username or password')
-            return render(request, self.template_name)
-
-
-class RegisterView(View):
-    template_name = 'zonework_app/register.html'
-
-    def get(self, request):
-        form = UserCreationForm()
-        return render(request, self.template_name, {'form': form})
-
-    def post(self, request):
+def register(request):
+    if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
             student = Student(user=user)
             student.save()
-            return redirect('zonework_app:login')
-        else:
-            return render(request, self.template_name, {'form': form})
+            # You can create a Student instance related to the User here.
+            return redirect('zonework_app/login')
+    else:
+        form = UserCreationForm()
+    return render(request, 'zonework_app/register.html', {'form': form})
 
+def index(request):
+    return render(request, 'zonework_app/index.html')
 
-class DashboardListView(ListView):
-    template_name = 'zonework_app/dashboard.html'
-    context_object_name = 'items'
+# here are tests
+def test(request):
+    return render(request, 'zonework_app/test.html')
 
-    def get_queryset(self):
-        student, created = Student.objects.get_or_create(user=self.request.user)
-        queryset = LearningItem.objects.filter(student=student)
-        print(queryset)
-        return queryset
-
-class IndexView(View):
-    template_name = 'zonework_app/index.html'
-
-    def get(self, request):
-        return render(request, self.template_name)
-
-
+def nav_bar(request):
+    return render(request, 'zonework_app/nav_bar.html')

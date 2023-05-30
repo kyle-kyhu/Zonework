@@ -7,13 +7,18 @@ Learning Tab
 {% block content %}
 
     <h1>Learning Tab</h1>
+
+<!--New form-->
+
     <form method="POST">
         {% csrf_token %}
         {{ form.as_table }}  <!-- This will render the form fields as a series of paragraphs -->
         <button type="submit">start</button>
     </form>
 
-<!-- Enter Class  -->
+<!--here is the form that isn't working-->
+
+<!-- Begin a new class  -->
 <!--<div class="container">-->
 <!--    <form method="POST">-->
 <!--        {% csrf_token %}-->
