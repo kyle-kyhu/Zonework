@@ -4,20 +4,18 @@ from .forms import ItemForm
 from django.contrib.auth import login as auth_login, authenticate
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.decorators import login_required
-# this one is new as of 4/16/23
 from django.contrib.auth.views import LoginView
+from django.views.generic import ListView
 
 
-# Create your views here.
-
-@login_required
+#@login_required
 #a list of all items belonging to a student
 def dashboard(request):
     # query for items for the logged in student
     items = Item.objects.filter(student=request.user.student)
     return render(request, 'zonework_app/dashboard.html', {'items': items})
 
-@login_required
+#@login_required
 def learning_tab(request):
     if request.method == "POST":
         form = ItemForm(request.POST)
@@ -58,8 +56,17 @@ def index(request):
     return render(request, 'zonework_app/index.html')
 
 # here are tests
-def test(request):
-    return render(request, 'zonework_app/test.html')
+# def test(request):
+#     return render(request, 'zonework_app/test.html')
 
-def nav_bar(request):
-    return render(request, 'zonework_app/nav_bar.html')
+# def nav_bar(request):
+#     return render(request, 'zonework_app/nav_bar.html')
+
+"""here is v2"""
+# class LearningTabView(ListView):
+#     model = LearningItem
+#     template_name = 'zonework_app/learning_tab.html'
+
+# class DashboardView(ListView):
+#     model = LearningItem
+#     template_name = 'zonework_app/dashboard.html'

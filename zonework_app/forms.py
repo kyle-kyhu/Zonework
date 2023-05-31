@@ -1,9 +1,9 @@
 from django import forms
-from .models import LearningItem
+from .models import Item
 
 class ItemForm(forms.ModelForm):
     class Meta:
-        model = LearningItem
+        model = Item
         fields = [
             'subject',
             'assessment',

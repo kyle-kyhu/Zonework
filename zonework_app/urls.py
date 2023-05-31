@@ -1,8 +1,8 @@
 from django.contrib import admin
 from django.urls import path
 from . import views
-# this is new as of 4/16/23
 from django.contrib.auth.views import LoginView
+
 
 
 app_name = 'zonework_app'
@@ -14,6 +14,5 @@ urlpatterns = [
     path('login/', LoginView.as_view(template_name='zonework_app/login.html'), name='login'),
     path('dashboard/', views.dashboard, name="dashboard"),
     path('register/', views.register, name="register"),
-    path('test/', views.test, name="test"),
     path('index/', views.index, name="index"),
 ]
