@@ -1,4 +1,7 @@
 from django.contrib import admin
-from .models import Student, LearningItem
+from .models import Student, Item, LearningItem
 
-#admin.site.register(Student, Item)
+admin.site.register(Student)
+admin.site.register(Item)
+admin.site.register(LearningItem)
+

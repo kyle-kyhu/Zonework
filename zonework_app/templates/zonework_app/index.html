@@ -1,12 +1,21 @@
-{% extends "zonework_app/base.html" %}
-
-{% block content %}
-  <h1>Welcome to Zonework</h1>
-  <p>Zonework is a homework planning and to-do list service that helps students organize their learning items.</p>
+{% extends "zonework_app/base.html" %} {% block content %}
+<h1>Welcome to Zonework</h1>
+<p>
+  Zonework is a homework planning and to-do list service that helps students
+  organize their learning items.
+</p>
 
 <!--  {% if user.is_authenticated %}-->
-    <p><a href="{% url 'zonework_app:dashboard_list' %}">Go to Dashboard</a></p>
+<p>
+  You can view your <a href="{% url 'zonework_app:dashboard' %}">Dashboard</a>
+</p>
+<p>
+  Or you can continue your work on the
+  <a href="{% url 'zonework_app:learning_tab' %}">Learning Tab</a>
+</p>
 <!--  {% else %}-->
-    <p><a href="{% url 'zonework_app:login' %}">Login</a> or <a href="/register/">Register</a> to get started.</p>
-  {% endif %}
-{% endblock %}
+<p>
+  <a href="{% url 'zonework_app:login' %}">Login</a> or
+  <a href="/register/">Register</a> to get started.
+</p>
+{% endif %} {% endblock %}

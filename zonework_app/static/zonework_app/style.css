@@ -1,0 +1,16 @@
+button a #button {
+  float: right;
+  justify-content: flex-end;
+  background-color: #c39170;
+  color: #f70808;
+}
+
+h1 a,
+h2 a {
+  color: #c25100;
+}
+
+.form-container {
+  max-height: 45px;
+  /* Additional styles if needed */
+}

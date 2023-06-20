@@ -1,0 +1,35 @@
+/* styles.css */
+
+/* Add some padding and background color to the learning_tab container */
+.learning_tab {
+  padding: 20px;
+  background-color: #f2f2f2;
+}
+
+/* Style the heading */
+.learning_tab h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+/* Style the paragraph text */
+.learning_tab p {
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+/* Add some margin to the list items */
+.learning_tab ul {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+/* Style the list items */
+.learning_tab li {
+  font-size: 16px;
+}
+
+/* Add some spacing between the list items */
+.learning_tab li + li {
+  margin-top: 5px;
+}

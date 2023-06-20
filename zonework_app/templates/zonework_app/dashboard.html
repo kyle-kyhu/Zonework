@@ -10,10 +10,31 @@ Dashboard
     <table>
         {% for item in items.all %}
             <li>{{ item.subject }} - {% if item.assessment %}Assessment{% else %}Not Assessment{% endif %} - {{ item.entry_date }}</li>
-            <li>{{ item.</li>
+            <li>{{ item.subject }} - {{ item.assessment }} - {{ item.description }} - {{ item.entry_date }}</li>
+            <li>{{ item.subject }} - {{ item.assessment }} - {{ item.description }} - {{ item.entry_date }}</li>
         {% endfor %}
     </table>
 
+<br>
 
+<!--this is test html-->
+
+<table>
+    <div>
+        <h3> Here is a test to render data</h3>
+        <p> Here is the student data
+            {{ student.user }}
+            {{ student.address }}
+            {{ student.class_name }}
+        </p>
+        <p> Here is the learning Item data
+            {{ LearningItem.subject }}
+            {{ LearningItem.assessment }}
+            {{ LearningItem.description }}
+            {{ LearningItem.entry_date }}
+            {{ LearningItem.student }}
+        </p>
+    </div>
+</table>
 
 {% endblock %}
