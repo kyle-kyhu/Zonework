@@ -3,7 +3,8 @@
 
 {% block content %}
 <h1>Enter Subject</h1>
-<form action="" method="">
+<p>Then you should be taken to the learning tab</p>
+<form action="" method="POST">
     {% csrf_token %}
     {{ form|crispy }}
     <button class="btn btn-success ml-2" type="submit">Enter</button>

@@ -3,7 +3,10 @@
 
 {% block content %}
 <h1>dashboard</h1>
+<table>
+    {% for learningitem in list_of_items %}
 
-<p>{{ learningitem.subject }} - {{learningitem.text}}</p>
-
+    <p>{{ learningitem.subject }} - {{learningitem.completed}} - {{learningitem.text}}</p>
+    {% endfor %}
+</table>
 {% endblock content %}

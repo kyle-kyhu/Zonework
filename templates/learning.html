@@ -3,10 +3,46 @@
 
 {% block content %}
 <h1>learning</h1>
-<form action="" method="post">
-    {% csrf_token %}
-    {{ form|crispy }}
-    <button class="btn btn-success ml-2" type="submit">Enter</button>
-</form>
+<div>
+    <p> Enter your accessment and the text as completed and details</p>
+    <p>e.g. "understand" - problem 3.06 or "Not yet" - problem 3.07</p>
 
+</div>
+    <form action="" method="post">
+        <p>Begin your session on {{ learningitem.subject }}"<- Your subject should appear here"</p>
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button class="btn btn-success ml-2" type="submit">Enter</button>
+    </form>
+    <div>
+</br>
+
+<!-- Return items that are entered above, similar to the dashboard -->
+    <h4>Your Registered Learning Items:</h4>
+    <table>
+        <thead>
+            <tr>
+                <th>Student |</th>
+                <th>Subject |</th>
+                <th>Status |</th>
+                <th>Details |</th>
+                <th>Entry Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- {% for learningitem in list_of_items %}
+            <tr>
+                <td>{{ learningitem.student }}</td>
+            </tr>
+                <td>{{ learningitem.subject }} - {{learningitem.text}}</td>
+            {% endfor %} -->
+
+            {% for learningitem in list_of_items %}
+
+            <p>{{ learningitem.subject }} - {{learningitem.completed}} - {{learningitem.text}}</p>
+
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock content %}
