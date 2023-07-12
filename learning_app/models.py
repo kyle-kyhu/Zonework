@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.urls import reverse
+from django.utils import timezone
 
 
 class Student(models.Model):
@@ -11,11 +13,12 @@ class Student(models.Model):
 
 class LearningItem(models.Model):
     subject = models.CharField(max_length=200)
-    completed = models.CharField(max_length=40)
+    completed = models.BooleanField(null=True)
     student = models.ForeignKey(
         Student, on_delete=models.CASCADE, null=True, blank=True
     )
     text = models.TextField(max_length=200)
+    entry_date = models.DateTimeField(default=timezone.now())
 
     def __str__(self):
         return f"{self.student} | {self.subject} - {self.completed} | {self.text}"

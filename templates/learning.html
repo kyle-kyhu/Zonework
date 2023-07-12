@@ -8,16 +8,19 @@
     <p>e.g. "understand" - problem 3.06 or "Not yet" - problem 3.07</p>
 
 </div>
-    <form action="" method="post">
-        <p>Begin your session on {{ learningitem.subject }}"<- Your subject should appear here"</p>
-        {% csrf_token %}
+<div>
+    <form action="" method="post">{% csrf_token %}
+
         {{ form|crispy }}
         <button class="btn btn-success ml-2" type="submit">Enter</button>
+    </div>
+</div>
     </form>
-    <div>
+</div>
 </br>
 
 <!-- Return items that are entered above, similar to the dashboard -->
+<div>
     <h4>Your Registered Learning Items:</h4>
     <table>
         <thead>
@@ -30,17 +33,14 @@
             </tr>
         </thead>
         <tbody>
-            <!-- {% for learningitem in list_of_items %}
-            <tr>
-                <td>{{ learningitem.student }}</td>
-            </tr>
-                <td>{{ learningitem.subject }} - {{learningitem.text}}</td>
-            {% endfor %} -->
-
             {% for learningitem in list_of_items %}
-
-            <p>{{ learningitem.subject }} - {{learningitem.completed}} - {{learningitem.text}}</p>
-
+            <tr>
+                <td>{{ learningitem.student }} </td>
+                <td>{{ learningitem.subject }} </td>
+                <td>{{ learningitem.completed }} </td>
+                <td>{{ learningitem.text }} </td>
+                <td>{{ learningitem.entry_date }} </td>
+            </tr>
             {% endfor %}
         </tbody>
     </table>
