@@ -4,48 +4,41 @@
   <p>Enter your accessment and the text as completed and details</p>
   <p>e.g. "understand" - problem 3.06 or "Not yet" - problem 3.07</p>
 </div>
-<form action="" method="post">
-  <p>
-    Begin your session on {{ learningitem.subject }}"<- Your subject should
-    appear here"
-  </p>
-  {% csrf_token %} {{ form|crispy }}
-  <button class="btn btn-success ml-2" type="submit">Enter</button>
-</form>
 <div>
-  <h4>Your Registered Learning Items:</h4>
-  <table>
-    <thead>
-      <tr>
-        <th>Student |</th>
-        <th>Subject |</th>
-        <th>Status |</th>
-        <th>Details |</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for learningitem in queryset %}
-      <tr>
-        <td>{{ learningitem.student }}</td>
-        <td>
-          {{ learningitem.subject }} - {{ learningitem.completed }} - {{
-          learningitem.text }}
-        </td>
-        <td>{{ learningitem.completed }}</td>
-        <td>{{ learningitem.text }}</td>
-      </tr>
-      {% endfor %} {% for learningitem in list_of_items %}
-      <tr>
-        <td>{{ learningitem.student }}</td>
-        <td>
-          {{ learningitem.subject }} - {{ learningitem.completed }} - {{
-          learningitem.text }}
-        </td>
-        <td>{{ learningitem.completed }}</td>
-        <td>{{ learningitem.text }}</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+    <form action="" method="post">{% csrf_token %}
+
+        {{ form|crispy }}
+        <button class="btn btn-success ml-2" type="submit">Enter</button>
+    </div>
+</div>
+    </form>
+</div>
+</br>
+
+<!-- Return items that are entered above, similar to the dashboard -->
+<div>
+    <h4>Your Registered Learning Items:</h4>
+    <table>
+        <thead>
+            <tr>
+                <th>Student |</th>
+                <th>Subject |</th>
+                <th>Status |</th>
+                <th>Details |</th>
+                <th>Entry Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for learningitem in list_of_items %}
+            <tr>
+                <td>{{ learningitem.student }} </td>
+                <td>{{ learningitem.subject }} </td>
+                <td>{{ learningitem.completed }} </td>
+                <td>{{ learningitem.text }} </td>
+                <td>{{ learningitem.entry_date }} </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </div>
 {% endblock content %}

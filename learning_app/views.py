@@ -18,14 +18,7 @@ class SubjectPageView(CreateView):
     success_url = reverse_lazy("learning")
 
 
-#class LearningPageView(CreateView):
-#    model = LearningItem
-#    template_name = "learning.html"
-#    fields = ["completed", "text"]
-#    context_object_name = "list_of_items"
-#    success_url = reverse_lazy("learning")
-
-class LearningPageView2(CreateView):
+class LearningPageView(CreateView, ListView):
     model = LearningItem
     template_name = "learning.html"
     form_class = ItemForm
