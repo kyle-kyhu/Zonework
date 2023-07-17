@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>dashboard</h1>
+<table>
+    {% for session in list_of_session_items %}
+
+    <p>{{ session.subject }} - {{session.assessmemt}} - {{session.assessmemt_description}}</p>
+    {% endfor %}
+</table>
+{% endblock content %}
