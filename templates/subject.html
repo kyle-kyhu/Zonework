@@ -1,13 +1,9 @@
-{% extends "base.html" %}
-{% load crispy_forms_tags %}
-
-{% block content %}
+{% extends "base.html" %} {% load crispy_forms_tags %} {% block content %}
 <h1>Enter Subject</h1>
 <p>Then you should be taken to the learning tab</p>
 <form action="" method="POST">
-    {% csrf_token %}
-    {{ form|crispy }}
-    <button class="btn btn-success ml-2" type="submit">Enter</button>
+  {% csrf_token %} {{ form|crispy }}
+  <button class="btn btn-success ml-2" type="submit">Enter</button>
 </form>
 
 {% endblock content %}
