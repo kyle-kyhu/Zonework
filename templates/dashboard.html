@@ -1,12 +1,52 @@
 {% extends "base.html" %}
-{% load crispy_forms_tags %}
 
 {% block content %}
-<h1>dashboard</h1>
-<table>
-    {% for learningitem in list_of_items %}
+  <h3>Dashboard</h3>
 
-    <p>{{ learningitem.subject }} - {{learningitem.completed}} - {{learningitem.text}}</p>
-    {% endfor %}
-</table>
-{% endblock content %}
+  <!-- <div>
+    <h4>Ongoing Learning Items: {{ ongoing_count }}</h4>
+    <h4>Finalized Learning Items: {{ finalized_count }}</h4>
+  </div> -->
+
+  <div style="width: 400px; height: 300px;">
+    <canvas id="chart"></canvas>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var ongoingCount = parseInt('{{ ongoing_count }}');
+      var finalizedCount = parseInt('{{ finalized_count }}');
+      
+      var ctx = document.getElementById('chart').getContext('2d');
+      var chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Ongoing', 'Finalized'],
+          datasets: [{
+            label: 'Learning Items',
+            data: [ongoingCount, finalizedCount],
+            backgroundColor: [
+              'rgba(54, 162, 235, 0.5)', // Ongoing color
+              'rgba(75, 192, 192, 0.5)', // Finalized color
+            ],
+            borderColor: [
+              'rgba(54, 162, 235, 1)', // Ongoing border color
+              'rgba(75, 192, 192, 1)', // Finalized border color
+            ],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: {
+              beginAtZero: true,
+              precision: 0
+            }
+          }
+        }
+      });
+    });
+  </script>
+{% endblock %}

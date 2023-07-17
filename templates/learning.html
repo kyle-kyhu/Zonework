@@ -1,44 +1,118 @@
-{% extends "base.html" %} {% load crispy_forms_tags %} {% block content %}
-<h1>learning</h1>
-<div>
-  <p>Enter your accessment and the text as completed and details</p>
-  <p>e.g. "understand" - problem 3.06 or "Not yet" - problem 3.07</p>
-</div>
-<div>
-    <form action="" method="post">{% csrf_token %}
+{% extends "base.html" %} {% load crispy_forms_tags %} 
 
-        {{ form|crispy }}
-        <button class="btn btn-success ml-2" type="submit">Enter</button>
-    </div>
-</div>
-    </form>
-</div>
-</br>
+{% block styles %}
+<style>
+.form-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem;
+}
 
-<!-- Return items that are entered above, similar to the dashboard -->
-<div>
-    <h4>Your Registered Learning Items:</h4>
-    <table>
+.update-btn {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.8rem;
+}
+
+.table td,
+.table th {
+  padding: 0.5rem;
+}
+
+#id_text {
+  width: 200px;
+  height: 34px;
+}
+
+#id_subject {
+  width: 200px;
+  height: 34px;
+}
+
+</style>
+{% endblock %}
+
+{% block content %}
+  
+
+
+  <div>
+    <h4>What are you Learning now?</h4>
+    <form action="{% url 'create_learning_item' %}" method="post">
+      {% csrf_token %}
+      
+     <div >
+      <table class="table">
         <thead>
-            <tr>
-                <th>Student |</th>
-                <th>Subject |</th>
-                <th>Status |</th>
-                <th>Details |</th>
-                <th>Entry Date</th>
-            </tr>
+          <tr>
+            <th>Subject</th>
+            <th>Text</th>
+          </tr>
         </thead>
         <tbody>
-            {% for learningitem in list_of_items %}
-            <tr>
-                <td>{{ learningitem.student }} </td>
-                <td>{{ learningitem.subject }} </td>
-                <td>{{ learningitem.completed }} </td>
-                <td>{{ learningitem.text }} </td>
-                <td>{{ learningitem.entry_date }} </td>
-            </tr>
-            {% endfor %}
+          <tr>
+            <td>
+              <input type="text" id="id_subject" name="subject">
+            </td>
+            <td>
+              <textarea id="id_text" name="text"></textarea>
+            </td>
+            <td>
+              <button class="btn btn-primary btn-sm update-btn" type="submit">Add</button>
+            </td>
+          </tr>
         </tbody>
-    </table>
+      </table>
+
+          <!-- <label for="id_subject" >Subject:</label>
+          <input type="text" id="id_subject" name="subject">
+          <label for="id_text" >Text:</label>
+          <textarea id="id_text" name="text"></textarea>-->
+
+      </div>
+    </form>
+  </div>
+  
+  <hr>
+
+<!-- List of learning items from the database -->
+<div>
+  <h4>Your Registered Learning Items:</h4>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Update</th>
+        <th>Status</th>
+        <th>Subject</th>
+        <th>Text</th>
+        <th>Entry Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for learningitem in list_of_items reversed %}
+      <tr>
+        <td>
+          <form action="{% url 'update_completed' learningitem.id %}" method="post">
+            {% csrf_token %}
+            {% if learningitem.completed %}
+              <input type="checkbox" name="completed" value="ok" checked> OK
+              <input type="checkbox" name="completed" value="nok"> NOK
+            {% else %}
+              <input type="checkbox" name="completed" value="ok"> OK
+              <input type="checkbox" name="completed" value="nok" checked> NOK
+            {% endif %}
+            <button class="btn btn-primary btn-sm update-btn" type="submit">Update</button>
+          </form>
+        </td>
+        <td>
+          {% if learningitem.completed %} Done! {% else %} Not Done {% endif %}
+        </td>
+        <td>{{ learningitem.subject }}</td>
+        <td>{{ learningitem.text }}</td>
+        <td>{{ learningitem.entry_date }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
 </div>
-{% endblock content %}
+{% endblock %}

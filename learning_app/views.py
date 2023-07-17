@@ -37,12 +37,36 @@ class LearningPageView(CreateView, ListView):
         context["list_of_items"] = LearningItem.objects.filter(student=self.request.user.student)
         return context 
 
+def create_learning_item(request):
+    if request.method == "POST":
+        form = ItemForm(request.POST)
+        if form.is_valid():
+            learning_item = form.save(commit=False)
+            learning_item.student = request.user.student
+            learning_item.save()
+    return redirect("learning")
 
 
-class DashboardPageView(ListView):
-    model = LearningItem
+def update_completed(request, item_id):
+    learning_item = LearningItem.objects.get(id=item_id)
+    if request.method == "POST":
+        completed_value = request.POST.get("completed")
+        if completed_value == "ok":
+            learning_item.completed = True
+        elif completed_value == "nok":
+            learning_item.completed = False
+        learning_item.save()
+    return redirect("learning")
+
+
+class DashboardPageView(TemplateView):
     template_name = "dashboard.html"
-    context_object_name = "list_of_items"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['ongoing_count'] = LearningItem.objects.filter(completed=False).count()
+        context['finalized_count'] = LearningItem.objects.filter(completed=True).count()
+        return context
 
 
 class AboutPageView(TemplateView):
