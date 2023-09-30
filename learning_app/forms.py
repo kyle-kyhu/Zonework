@@ -1,8 +1,10 @@
-# from django import forms
-# from .models import Session
+from django import forms
+from .models import Session
 
 
-# class SessionForm(forms.ModelForm):
-#     class Meta:
-#         model = Session
-#         fields = ("session",)
+
+
+ 
+# class Session_Form(forms.Form):
+#     SESSION_SELECTOR = ["Understand", "Not Yet"]
+#     SESSION_SELECTOR = forms.BooleanField()

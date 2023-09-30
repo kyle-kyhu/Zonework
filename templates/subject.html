@@ -1,17 +1,27 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
 
+
 {% block content %}
-<h3>Begin Session</h3>
+<h3>Begin Session on {{ subject.enter_subject }}</h3>
 
 <!-- First form for subject -->
-<div>
-    <p>Enter your subject</p>
-    <form action="" method="POST">
+<div> 
+    <p class="enter-subject">Enter your subject</p>
+    <form class="subject-form" action="" method="POST">
+        
         {% csrf_token %}
-        {{ form.as_table }}
-        <button class="btn btn-success ml-2" type="submit">Start</button>
+        {{ form|crispy }}
+        <button class="btn btn-success ml-2" type="submit"><a href="{% url 'session' %}"></a>Start</a></button>
+    </form>
+</div>
+<div>
+    <p>enter your name</p>
+    <form action="" method="post">
+        {% csrf_token %}
+        <a href="{% url 'session' %}">To Session page</a>
     </form>
 </div>
 
 {% endblock content %}
+

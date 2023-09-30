@@ -2,21 +2,36 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-<h1>learning</h1>
+
+<body>
+<h3 class="test-text"> start learning {{ subject.enter_subject }}</h3>
 <div>
     <p> Enter your assessment and description</p>
     <p>e.g. "understand" - problem 3.06 or "Not yet" - problem 3.07</p>
 </div>
-<div>
-    <form action="" method="post">{% csrf_token %}
-
-        {{ form.as_table }}
-        <button class="btn btn-success ml-2" type="submit">Enter</button>
+<div class="start-session">
+    <div class="session-outline">
+        <form class="session-form" action="" method="post">{% csrf_token %}
+            {{ form }}
+            <button class="btn btn-success ml-2" type="submit">Enter</button>
+        </form>
     </div>
 </div>
-    </form>
-</div>
 </br>
+
+<!-- here is a new manual form -->
+<form method="post">
+    {% csrf_token %}
+    <div class="zw-main-bar" data-toggle="buttons">
+        <div class="zw-bar">
+            <button class="bar-item" type="button" href=#>Understand</button>
+            <button class="bar-item" type="button" href=#>  Not  Yet </button>
+            <input class="bar-description" placeholder="enter details">             
+            <button class="bar-item" id="end-button" type="submit">Submit</button>
+        </div>
+    </div>
+</form>
+
 
 <!-- Return items that are entered above, similar to the dashboard -->
 <div>
@@ -42,4 +57,5 @@
         </tbody>
     </table>
 </div>
+</body>
 {% endblock content %}

@@ -18,15 +18,16 @@ class Subject(models.Model):
     subject_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.enter_subject} | {self.student}"
+        return self.enter_subject
 
     def get_absolute_url(self):
         return reverse("subject", kwargs={"pk": self.pk})
 
 
 class Session(models.Model):
+    #student = models.ForeignKey(Student, on_delete=models.CASCADE)
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
-    assessment = models.BooleanField(null=True)
+    assessment = models.BooleanField(null=True, blank=True)
     assessment_description = models.TextField(max_length=500)
     session_date = models.DateTimeField(auto_now_add=True)
 
@@ -34,4 +35,4 @@ class Session(models.Model):
         return f"{self.subject} - {self.assessment} - {self.assessment_description} - {self.session_date}"
 
     def get_absolute_url(self):
-        pass
+        return reverse("session", kwargs={"pk": self.pk})
