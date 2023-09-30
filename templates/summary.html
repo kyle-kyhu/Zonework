@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block title %}Summary{% endblock title %}
+
+{% block content %}
+
+
+
+<!-- here is the learnings recap list -->
+<div>
+  <h2>Here is the summary page</h2>
+  {% for session in session_list %}
+    <div class="session-entry">
+      <h2><a href="">{{ session.subject }}</a></h2>
+      <p>{{ session.body }}</p>
+    </div>
+  {% endfor %}
+</div>
+
+{% endblock content %}
+
+
+
