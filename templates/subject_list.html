@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Zonework{% endblock title %}
+
+{% block content %}
+{% for subject in subject_list %}
+<div class="card">
+    <div class="card-header">
+        <span class="fw-bold">
+            <a href="{% url 'subject_detail' subject.pk %}">{{ subject.title }}</a>
+        </span> &middot; 
+        <span class="text-muted">by {{ subject.student }} | {{ subject.date }}</span>
+        <span class="">
+            <a href="{% url 'subject_edit' subject.pk %}">Edit</a>
+            <a href="{% url 'subject_delete' subject.pk %}">Delete</a>
+        </span>
+    </div>
+</div>
+<br />
+{% endfor %}
+{% endblock content %}

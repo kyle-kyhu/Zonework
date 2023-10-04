@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="subject-entry">
+    <h2>{{ subject.entry }}</h2>
+    <p>By: {{ subject.student }} | {{ subject.date }}</p>
+</div>
+<div>
+    <p>
+    <a href="{% url 'subject_edit' subject.pk %}">Edit</a>
+    <a href="{% url 'subject_delete' subject.pk %}">Delete</a>
+    </p>
+    <p>Back to <a href="{% url 'subject_list' %}">All Subjects</a>.</p>
+</div>
+{% endblock content %}
