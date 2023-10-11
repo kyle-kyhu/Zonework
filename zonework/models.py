@@ -16,3 +16,19 @@ class Subject(models.Model):
 
     def get_absolute_url(self):
         return reverse("subject_detail", kwargs={"pk": self.pk})
+
+
+class Assessment(models.Model):
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
+    assessment = models.BooleanField(null=True, blank=True)
+    notes = models.CharField(max_length=255)
+    student = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+    )
+
+    def __str__(self):
+        return self.notes
+
+    def get_abolute_url(self):
+        return reverse("subject_list")

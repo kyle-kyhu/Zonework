@@ -1,15 +1,36 @@
 {% extends "base.html" %}
+{% load crispy_forms_tags %}
 
 {% block content %}
 <div class="subject-entry">
-    <h2>{{ subject.entry }}</h2>
+    <h2>{{ subject.title }}</h2>
     <p>By: {{ subject.student }} | {{ subject.date }}</p>
 </div>
+
+<h4>Add Notes</h4>
+<form action="" method="post">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <button class="btn btn-success ml-2" type="submit">Save</button>
+</form>
+
+<hr>
+<h4>Assessments</h4>
+{% for assessment in subject.assessment_set.all %}
+<p>
+    {{ assessment.student }} &middot; 
+    {{ assessment.assessment }} | {{ assessment.notes }}
+</p>
+{% endfor %}
+<hr>
+
 <div>
+{% if subject.student.pk == request.user.pk %}
     <p>
     <a href="{% url 'subject_edit' subject.pk %}">Edit</a>
     <a href="{% url 'subject_delete' subject.pk %}">Delete</a>
     </p>
+{% endif %}
     <p>Back to <a href="{% url 'subject_list' %}">All Subjects</a>.</p>
 </div>
 {% endblock content %}
