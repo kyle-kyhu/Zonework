@@ -44,7 +44,7 @@ class AssessmentPost(SingleObjectMixin, FormView):
 
     def get_success_url(self):
         subject = self.object
-        return reverse("subject_detail", kwargs={"pk": subject.pk})  # is this right?
+        return reverse("subject_detail", kwargs={"pk": subject.pk})  
 
 
 class SubjectDetailView(LoginRequiredMixin, View):

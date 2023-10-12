@@ -22,10 +22,14 @@ class Assessment(models.Model):
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
     assessment = models.BooleanField(null=True, blank=True)
     notes = models.CharField(max_length=255)
+    timestamp = models.DateTimeField(auto_now_add=True, null=True)
     student = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
     )
+
+    class Meta:
+        ordering = ["-timestamp"]
 
     def __str__(self):
         return self.notes
