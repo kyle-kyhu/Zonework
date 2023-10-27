@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.db import models
 from django.urls import reverse
+from django import forms
 
 
 class Subject(models.Model):
@@ -17,10 +18,16 @@ class Subject(models.Model):
     def get_absolute_url(self):
         return reverse("subject_detail", kwargs={"pk": self.pk})
 
+CHOICE = [('understand', 'Understand'), ('not_yet', 'Not Yet')]
 
 class Assessment(models.Model):
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
-    assessment = models.BooleanField(null=True, blank=True)
+    assessment = models.BooleanField(
+        choices=CHOICE,
+        default="", 
+        null=True,
+        blank=True)
+    
     notes = models.CharField(max_length=255)
     timestamp = models.DateTimeField(auto_now_add=True, null=True)
     student = models.ForeignKey(
@@ -34,5 +41,22 @@ class Assessment(models.Model):
     def __str__(self):
         return self.notes
 
+    def get_abolute_url(self):
+        return reverse("subject_list")
+
+
+class SubAssessment(models.Model):
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
+    assessment = models.CharField(max_length=100)
+    notes = models.CharField(max_length=255)
+    timestamp = models.DateTimeField(auto_now_add=True, null=True)
+    student = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+
+    class Meta:
+        ordering = ["-timestamp"]
+
+    def __str__(self):
+        return self.assessment | self.notes
+    
     def get_abolute_url(self):
         return reverse("subject_list")

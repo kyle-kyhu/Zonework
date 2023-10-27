@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
+{% load widget_tweaks %}
 
 {% block content %}
 <div class="subject-entry">
@@ -7,11 +8,68 @@
     <p>By: {{ subject.student }} | {{ subject.date }}</p>
 </div>
 
-<h4>Add Notes</h4>
-<form action="" method="post">
+<!-- here is the form that works -->
+<!-- <h4>Add Notes</h4>
+<h3>Here is form.as_table</h3>
+<div class="notes">
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form.as_table }}
+        <button class="btn btn-success ml-2" type="submit">Save</button>
+    </form>
+</div>  -->
+
+
+ <!-- Here is the manual form  -->
+</br>
+<h3>Here is form with widgets form the forms.py</h3>
+<form method="post">
     {% csrf_token %}
-    {{ form|crispy }}
-    <button class="btn btn-success ml-2" type="submit">Save</button>
+    <div class="zw-main-bar">
+        <div class="zw-bar">
+            <label class="btn btn-success">
+                <input type="radio" name="options" id="" autocomplete="off" checked> Understand
+              </label>
+              <label class="btn btn-success">
+                <input type="radio" name="options" id="" autocomplete="off"> Not Yet
+              </label>
+            <!-- <button class="btn btn-success" id="assessment-button" type="button" name="understand" Placeholder="understand">Understand {{ Assessment. }}</button>
+            <button class="btn btn-success" id="assessment-button" type="button" name="Not Yet" placeholder="Not Yet">Not Yet {{ SubAssessment.widget }}</button> -->
+            <input class="bar-description" placeholder="enter details"/>             
+            <button class="btn btn-success" id="" type="submit">Submit</button>
+        </div>
+    </div>
+</form>
+</br>
+</br>
+
+<!-- Here is the form with widget tweaks -->
+<h3>Here is form with widget tweaks</h3>
+<form method="post">
+    {% csrf_token %}
+    <div class="zw-main-bar" class="form-inline">
+        <div class="zw-bar">
+            {% render_field form.assessment type="button" %}
+            {% render_field form.assessment type="button" placeholder="Not Yet" %}
+            <!-- {% render_field form.AssessmentForm.assessment class="form-control" placeholder="Not Yet"%} -->
+            <!-- {% render_field form.assessment|append_attr:"understand:understand" type="submit" placeholder="yes-understand"%} -->
+            <!-- <input class="bar-item" type="submit" href=#>Understand
+            <input class="bar-item" type="submit" href=#>Not Yet -->
+            <input class="bar-description" placeholder="enter details"/>             
+            <button class="bar-item" id="end-button" type="submit">Submit</button>
+        </div>
+    </div>
+</form>
+</br>
+<h3>Here is the fourth form from chaptGPT</h3>
+<form method="post" class="form-inline">
+    {% csrf_token %}
+    <div class="form-group">
+        <button class="btn btn-primary" id="assessment-button" type="button" name="" value="understand">Understand</button>
+        <button class="btn btn-primary" id="assessment-button" type="button" name="" value="not_yet">Not Yet</button>
+        <input class="form-control" type="text" name="notes" placeholder="Enter details">
+        <button class="btn btn-primary" id="assessment-button" type="submit">Submit</button>
+    </div>
 </form>
 
 <hr>
