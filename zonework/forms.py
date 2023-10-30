@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Assessment
+from .models import Assessment, SubAssessment
 
 ASSESSMENT_CHOICES= [
     ('understood', 'Understood'),
