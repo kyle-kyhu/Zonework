@@ -20,7 +20,8 @@ class Subject(models.Model):
 
 class Assessment(models.Model):
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
-    assessment = models.BooleanField(null=True, blank=True)
+    #assessment = models.BooleanField(null=True, blank=True)
+    assessment = models.CharField(max_length=100, null=True, blank=True)
     notes = models.CharField(max_length=255)
     timestamp = models.DateTimeField(auto_now_add=True, null=True)
     student = models.ForeignKey(

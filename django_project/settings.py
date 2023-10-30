@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "accounts",
     "pages",
     "zonework",
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [
