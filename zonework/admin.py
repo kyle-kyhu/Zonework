@@ -1,6 +1,10 @@
 from django.contrib import admin
-from .models import Subject, Assessment, SubAssessment
+from .models import Subject, Assessment, SubAssessment, Evaluation
 
+class EvalutationInline(admin.TabularInline):
+    model = Evaluation
+    extra = 0
+    list_display = "__all__"
 
 class AssessmentInline(admin.TabularInline):
     model = Assessment
@@ -21,6 +25,9 @@ class SubjectAdmin(admin.ModelAdmin):
     ]
 
 
+
 admin.site.register(Subject, SubjectAdmin)
 admin.site.register(Assessment)
 admin.site.register(SubAssessment)
+admin.site.register(Evaluation)
+

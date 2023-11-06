@@ -1,45 +1,18 @@
-.notes {
-    background-color: gray;
 
-}
-
+/* can you fix the margin instead of using this? */
 .all-body-throughout {
     margin: 5px;
+    background-color: black;
 }
 
-.bar-item {
-    flex: auto;
-}
-
-.form-group {
+.zw-buttons {
     display: flex;
 }
-
-.zw-main-bar {
-    background-color: red;
-    margin: 10px auto;
-}
-
-.zw-bar {
+  
+#eval-button {
     display: flex;
-    margin: 10px auto;
+    width: 150px;
+    justify-content: center;
 }
 
-.bar-item {
-    padding: 15px 24px;
-    justify-content: space-evenly;
-    border: 2px crimson;    
-}
 
-.bar-description {
-    padding: 15px;
-    flex: 2;
-    border: 2px crimson solid;
-
-}
-
-#assessment-button {
-    padding: 15px auto;
-    width: 200px;
-    justify-content: space-evenly;
-}
