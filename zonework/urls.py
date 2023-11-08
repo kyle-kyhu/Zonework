@@ -5,10 +5,12 @@ from .views import (
     SubjectDetailView,
     SubjectUpdateView,
     SubjectDeleteView,
-    SubjectCreateView
+    SubjectCreateView,
+    DashboardView
 )
 
 urlpatterns = [
+    path("dashboard/", DashboardView.as_view(), name="dashboard"),
     path("<int:pk>/", SubjectDetailView.as_view(), name="subject_detail"),
     path("<int:pk>/edit/", SubjectUpdateView.as_view(), name="subject_edit"),
     path("<int:pk>/delete/", SubjectDeleteView.as_view(), name="subject_delete"),

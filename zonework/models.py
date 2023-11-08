@@ -19,6 +19,37 @@ class Subject(models.Model):
         return reverse("subject_detail", kwargs={"pk": self.pk})
 
 
+class Evaluation(models.Model):
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
+    understand = models.BooleanField(default=False)
+    not_yet = models.BooleanField(default=True)
+    notes = models.CharField(max_length=255)
+    timestamp = models.DateTimeField(auto_now_add=True, null=True)
+    student = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+    )
+
+    class Meta:
+        ordering = ["-timestamp"]
+
+    def __str__(self):
+        return self.notes
+
+    def get_abolute_url(self):
+        return reverse("subject_list")
+
+
+class Dashboard(models.Model):
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
+    todays_date = models.DateField(auto_now_add=True, null=True)
+
+    
+
+
+
+
+# The Assessment and SubAssessment are not in use 
 class Assessment(models.Model):
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
     assessment = models.BooleanField(default=False, null=True, blank=True)
@@ -56,23 +87,5 @@ class SubAssessment(models.Model):
         return reverse("subject_list")
 
 
-class Evaluation(models.Model):
-    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
-    understand = models.BooleanField(default=False)
-    not_yet = models.BooleanField(default=True)
-    notes = models.CharField(max_length=255)
-    timestamp = models.DateTimeField(auto_now_add=True, null=True)
-    student = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-    )
 
-    class Meta:
-        ordering = ["-timestamp"]
-
-    def __str__(self):
-        return self.notes
-
-    def get_abolute_url(self):
-        return reverse("subject_list")
 

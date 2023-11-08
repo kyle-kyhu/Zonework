@@ -22,110 +22,43 @@
   </div>
 
 
-
-<!-- <div class="subject-entry">
-    <h2>{{ subject.title }}</h2>
-    <p>By: {{ subject.student }} | {{ subject.date }}</p>
-</div> -->
-
-<!-- here is the form that works -->
-<!-- <h4>Add Notes</h4>
-<h3>Here is form.as_table that I cannot style</h3>
-<div class="notes">
-    <form action="" method="post">
-        {% csrf_token %}
-        {{ form.as_table }}
-        <button class="btn btn-success ml-2" type="submit">Save</button>
-    </form>
+<!-- Here is the count of total evaluations for today -->
+<div>
+    <p>Total Evaluations: {{ subject.evaluation_set.all.count }}</p>
+    <p>Total Evaluations for Today: </p>
 </div>
-
-here is a reversioning of forms as table
-<h4>Add Notes</h4>
-<div class="notes">
-    <form action="" method="post">
-        {% csrf_token %}
-        <div class="form-group">
-            <button class="btn btn-success" name="understand" value="1" type="submit">Understand</button>
-            <button class="btn btn-danger" name="not_yet" value="1" type="submit">Not Yet</button>
-        </div>
-        <div class="form-group">
-            <input type="text" class="form-control" name="notes" placeholder="Enter notes" required>
-        </div>
-        <button class="btn btn-primary" type="submit">Save</button>
-    </form>
-</div> -->
-
-
- <!-- Here is the manual form  -->
-<!-- </br>
-<h3>Here is the 2nd form that cannot connect to models</h3>
-<form method="post">
-    {% csrf_token %}
-    <div class="zw-main-bar">
-        <div class="zw-bar">
-            <label class="btn btn-success">
-                <input type="radio" name="options" id="" autocomplete="off" checked>Understand
-              </label>
-              <label class="btn btn-success">
-                <input type="radio" name="options" id="" autocomplete="off"> Not Yet
-              </label>
-            <button class="btn btn-success" id="assessment-button" type="button" name="understand" Placeholder="understand">Understand {{ Assessment. }}</button>
-            <button class="btn btn-success" id="assessment-button" type="button" name="Not Yet" placeholder="Not Yet">Not Yet {{ SubAssessment.widget }}</button>
-            <input class="bar-description" placeholder="enter details"/>             
-            <button class="btn btn-success" id="" type="submit">Submit</button>
-        </div>
-    </div>
-</form>
-</br>
-</br> -->
-
-<!-- Here is the form with widget tweaks -->
-<!-- <h3>Here is form with widget tweaks</h3>
-<form method="post">
-    {% csrf_token %}
-    <div class="zw-main-bar" class="form-inline">
-        <div class="zw-bar">
-            input class="bar-item" type="submit" href=#>Understand
-            <input class="bar-item" type="submit" href=#>Not Yet
-            <input class="bar-description" placeholder="enter details"/>             
-            <button class="bar-item" id="end-button" type="submit">Submit</button>
-        </div>
-    </div>
-</form> -->
-<!-- </br>
-<h4>Add Notes</h4>
-<form action="" method="post">
-    {% csrf_token %}
-    <div class="zw-main-bar">
-        <div class="zw-sub-bar">
-            <div>
-                {{ form.notes.label_tag }}
-                {{ form.notes }}
-            </div>
-            <button class="btn btn-success" id="eval-button" name="understand" value="1" type="submit">Understand</button>
-            <button class="btn btn-success" id="eval-button" name="not_yet" value="1" type="submit">Not Yet</button>
-        </div>
-    </div>
-</form> -->
 
 
 
 <!-- Here is the new rendered evaluations -->
-<h4>Evaluations for {{ subject.student }} in {{ subject.subject }}</h4>
+<div>
+    <h4>Evaluations for {{ evaluation.student }} in {{ evaluation.subject }} on {{ evaluation.timestamp }}</h4>
+    <table>
+        <thead>
+            <tr>
+                <th>Evaluation</th>
+                <th>Notes</th>
+            </tr>
+        </thead>
+    </table>
 
 {% for evaluation in subject.evaluation_set.all %}
-<p>
-    {{ evaluation.student }} &middot;
+
+<td>
     {% if evaluation.understand %}
         Understand
     {% elif evaluation.not_yet %}
         Not Yet
     {% endif %}
+</td>
+<td>
     | {{ evaluation.notes }}
+</td>
 </p>
 {% endfor %}
-
 <hr>
+</div>
+
 
 <div>
 {% if subject.student.pk == request.user.pk %}

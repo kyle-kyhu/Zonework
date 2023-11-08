@@ -1,14 +1,22 @@
-from typing import Any
-from django.forms.models import BaseModelForm
-from django.http import HttpResponse
+
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.views.generic import ListView, DetailView, FormView
+from django.views.generic import ListView, DetailView, FormView, TemplateView
 from django.views.generic.detail import SingleObjectMixin
 from django.views import View
 from django.views.generic.edit import UpdateView, DeleteView, CreateView
 from django.urls import reverse_lazy, reverse
-from .models import Subject, Evaluation
-from .forms import AssessmentForm, EvaluationForm
+
+from django.http import JsonResponse
+from django.core import serializers
+
+from .models import Subject, Dashboard
+from .forms import EvaluationForm
+
+
+class DashboardView(TemplateView):
+    model = Dashboard
+    template_name = 'dashboard.html'
+
 
 
 class SubjectListView(LoginRequiredMixin, ListView):

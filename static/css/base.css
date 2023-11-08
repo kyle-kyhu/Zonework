@@ -1,9 +1,6 @@
 
 /* can you fix the margin instead of using this? */
-.all-body-throughout {
-    margin: 5px;
-    background-color: black;
-}
+
 
 .zw-buttons {
     display: flex;
@@ -15,4 +12,11 @@
     justify-content: center;
 }
 
+body {
+    margin: 20px;
+    background-color: whitesmoke;
+}
 
+nav {
+    background-color: whitesmoke;
+}
