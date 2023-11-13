@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
 {% load tz %}
-
+{% load static %}
+    
+    
 
 {% block content %}
 
@@ -27,7 +29,8 @@
 
 <div class="eval-counts">
     <p>Total Evaluations: {{ subject.evaluation_set.all.count }}</p>
-     <p>Total Evaluations for Today: 
+     <p>
+        Total Evaluations for Today: 
         <!--create a for loop for all the evaluations from 00:00 to 23:59. -->
         <!-- the for loop below is not working -->
         {% for evaluation in subject.evaluation_set.all %}
@@ -42,7 +45,7 @@
 
 <div class="rendered-evaluations">
 
-    <table class="table table-success">
+    <table class="table table-primary">
         <thead>
             <tr>
                 <th>Evaluation</th>

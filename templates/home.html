@@ -6,11 +6,26 @@
 <body>
    “{% block content %}
    {% if user.is_authenticated %}
-     Hi {{ user.username }}! You are {{ user.age }} years old.
+     <p>Hi {{ user.username }} !</p>
+     <p>Today is {{ evaluation.timestamp }}.</p>
      <p><a href="{% url 'logout' %}">Log Out</a></p>
-     <p><a class="btn btn-primary btn-lg" href="{% url 'subject_list' %}" role="button">
-      View all articles</a></p>
+      <p>
+         <a class="btn btn-primary btn-lg" href="{% url 'subject_list' %}" role="button">
+            View all articles</a>
+      </p>
+
+      <p>What else can I add here?</p>
+      <ul>
+         <li>here are subjects you can browse</li>
+         <li>how do I make this view work for both</li>
+      </ul>
    {% else %}
+   <p>What else can I add here?</p>
+      <ul>
+         <li>here are subjects you can browse</li>
+      </ul>
+
+   <!-- here is the login/logout throught the project -->
      <p>You are not logged in</p>
      <a href="{% url 'login' %}">Log In</a> |
      <a href="{% url 'signup' %}">Sign Up</a>

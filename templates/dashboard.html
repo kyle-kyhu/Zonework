@@ -1,64 +1,14 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %} Dashboard {% endblock title %}
-<!-- Add this to the head section of your HTML file -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 {% block content %}
 
 <h2>Dashboard</h2>
 
-<!-- Add this where you want to display the chart -->
 <canvas id="evaluationsChart" width="400" height="200"></canvas>
-
-<!-- Add this script in your HTML file or in an external JavaScript file -->
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        var ctx = document.getElementById('evaluationsChart').getContext('2d');
-
-        // Assuming you have a variable 'evaluationsData' containing the data
-        // Replace this with the actual data you want to display
-        var evaluationsData = [
-            // Example data: ['2023-11-11', 5], ['2023-11-12', 8], ...
-            {% for evaluation in evaluations %}
-                ['{{ evaluation }}', 1],
-            {% endfor %}
-        ];
-
-        var chart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: Effort.map(item => item[0]),
-                datasets: [{
-                    label: 'Number of Evaluations',
-                    data: Time.map(item => item[1]),
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)', // Change the color as needed
-                    borderColor: 'rgba(75, 192, 192, 1)',     // Change the color as needed
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    x: {
-                        type: 'time',
-                        time: {
-                            unit: 'day'
-                        }
-                    },
-                    y: {
-                        beginAtZero: true,
-                        title: {
-                            display: true,
-                            text: 'Number of Evaluations'
-                        }
-                    }
-                }
-            }
-        });
-    });
-</script>
-
-
-
+<script src="{% static 'js/base.js' %}"></script>
 
 {% endblock content %}
+

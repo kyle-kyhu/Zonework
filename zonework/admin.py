@@ -5,7 +5,8 @@ class EvalutationInline(admin.TabularInline):
     model = Evaluation
     extra = 0
     list_display = [
-        ""
+        "subject",
+        "notes",
     ]
 
 class AssessmentInline(admin.TabularInline):

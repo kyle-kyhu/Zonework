@@ -11,10 +11,10 @@
         </span> &middot; 
         <span class="text-muted">by {{ subject.author }} | {{ subject.date }}</span>
         {% if subject.student.pk == request.user.pk %}
-        <span class="">
+        <!-- <span class="">
             <a href="{% url 'subject_edit' subject.pk %}">Edit</a>
             <a href="{% url 'subject_delete' subject.pk %}">Delete</a>
-        </span>
+        </span> -->
         {% endif %}
         <a href="{{ subject.get_absolute_url }}">Keep Learning</a>
     </div>

@@ -43,6 +43,7 @@ class Evaluation(models.Model):
         null=True,
     )
     notes = models.CharField(max_length=255)
+
     timestamp = models.DateTimeField(auto_now_add=True, null=True)
     student = models.ForeignKey(
         settings.AUTH_USER_MODEL,
