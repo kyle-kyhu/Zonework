@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
+{% load tz %}
 
 
 {% block content %}
@@ -23,43 +24,60 @@
 
 
 <!-- Here is the count of total evaluations for today -->
-<div>
+
+<div class="eval-counts">
     <p>Total Evaluations: {{ subject.evaluation_set.all.count }}</p>
-    <p>Total Evaluations for Today: </p>
+     <p>Total Evaluations for Today: 
+        <!--create a for loop for all the evaluations from 00:00 to 23:59. -->
+        <!-- the for loop below is not working -->
+        {% for evaluation in subject.evaluation_set.all %}
+            {% if evaluation.timestamp.date == date.today %}
+                {{ evaluation }}
+            {% endif %}
+        {% endfor %}
+    </p>
 </div>
 
-
-
 <!-- Here is the new rendered evaluations -->
-<div>
-    <h4>Evaluations for {{ evaluation.student }} in {{ evaluation.subject }} on {{ evaluation.timestamp }}</h4>
-    <table>
+
+<div class="rendered-evaluations">
+
+    <table class="table table-success">
         <thead>
             <tr>
                 <th>Evaluation</th>
                 <th>Notes</th>
+                <th>Timestamp</th>
             </tr>
         </thead>
+        <tbody>
+            {% for evaluation in subject.evaluation_set.all %}
+                <tr>
+                    <td class="eval-rendered-type {% if evaluation.understand %}understand{% elif evaluation.not_yet %}not-yet{% endif %}">
+                        {% if evaluation.understand %}
+                            Understand
+                        {% elif evaluation.not_yet %}
+                            Not Yet
+                        {% endif %}
+                    </td>
+                    <td>
+                        {{ evaluation.notes }}
+                    </td>
+                    <td>
+                        {{ evaluation.timestamp }}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
     </table>
-
-{% for evaluation in subject.evaluation_set.all %}
-
-<td>
-    {% if evaluation.understand %}
-        Understand
-    {% elif evaluation.not_yet %}
-        Not Yet
-    {% endif %}
-</td>
-<td>
-    | {{ evaluation.notes }}
-</td>
-</p>
-{% endfor %}
-<hr>
+    <hr>
 </div>
 
 
+
+
+
+<!-- here is the delete and edit buttons -->
 <div>
 {% if subject.student.pk == request.user.pk %}
     <p>

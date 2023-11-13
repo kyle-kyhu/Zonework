@@ -9,7 +9,7 @@
         <span class="fw-bold">
             <a href="{% url 'subject_detail' subject.pk %}">{{ subject.title }}</a>
         </span> &middot; 
-        <span class="text-muted">by {{ subject.student }} | {{ subject.date }}</span>
+        <span class="text-muted">by {{ subject.author }} | {{ subject.date }}</span>
         {% if subject.student.pk == request.user.pk %}
         <span class="">
             <a href="{% url 'subject_edit' subject.pk %}">Edit</a>

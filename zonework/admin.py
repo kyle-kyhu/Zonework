@@ -4,7 +4,9 @@ from .models import Subject, Assessment, SubAssessment, Evaluation
 class EvalutationInline(admin.TabularInline):
     model = Evaluation
     extra = 0
-    list_display = "__all__"
+    list_display = [
+        ""
+    ]
 
 class AssessmentInline(admin.TabularInline):
     model = Assessment
@@ -21,7 +23,7 @@ class SubjectAdmin(admin.ModelAdmin):
     ]
     list_display = [
         "title",
-        "student",
+        "author",
     ]
 
 

@@ -20,3 +20,26 @@ body {
 nav {
     background-color: whitesmoke;
 }
+
+
+/* here is the css for the eval rendered table */
+.eval-rendered-type {
+    font-weight: bold;
+}
+
+.eval-rendered-type.understand {
+    color: green;
+}
+
+.eval-rendered-type.not-yet {
+    color: red;
+}
+
+/* here is the css for the eval-counts div */
+.eval-counts {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    border: 1px solid black;
+    background-color: tomato;
+}
