@@ -1,4 +1,4 @@
-Zonework is a django capstone project for Coding Nomads.  The concept can be though of as pacing tool for learning.  I used a similar logic to help with keep up with the commitment of reading, watching, coding, failing and repeating the hard and lonely process.  
+Zonework started as a django capstone project.  The need I that was looking to fill it learning how to code python and django.  In short, this is a todo list where the user will add a detail and label that detail as "understand" or "not yet".    
 
 This tool should help users:
 1. Put in the work 
@@ -9,6 +9,7 @@ This tool should help users:
 
 This project will used as a group project.  
 
-To get started:
+To get started on your local server:
+- create your venv
+- install requirements.txt
 - python manage.py runserver
-- copy and paste this url for the homepage.  http://127.0.0.1:8000/index/
