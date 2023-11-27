@@ -10,7 +10,8 @@ class Evaluation(models.Model):
     not_yet = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    # add student field with AUTH_USER_MODEL
+    student = models.ForeignKey('accounts.CustomUser', on_delete=models.CASCADE, null=True)
+
 
     class Meta:
         ordering = ['created_at']

@@ -2,13 +2,13 @@ from django.urls import path
 
 from .views import (
     SubjectListView,
-    SujbectDetailView,
+    SubjectDetailView,
     DashboardView,  
 )
 
 
 urlpatterns = [
     path("dashboard/", DashboardView.as_view(), name="dashboard"),
-    path("<int:pk>/", SujbectDetailView.as_view(), name="subject_detail"),
+    path("<int:pk>/", SubjectDetailView.as_view(), name="subject_detail"),
     path("", SubjectListView.as_view(), name="subject_list"),
 ]

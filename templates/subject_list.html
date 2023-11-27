@@ -3,11 +3,21 @@
 {% block title %}Subject List{% endblock title %}
 
 {% block content %}
-  <h1>Subject List</h1>
+{% if user.is_authenticated %}
+    <p><a href="{% url 'logout' %}">Log Out</a></p>
+
+    h1>Subject List</h1>
   <ul>
     <li>Subject 1</li>
     <li>Subject 2</li>
     <li>Subject 3</li>
     <!-- Add more subjects as needed -->
   </ul>
+  
+{% else %}
+    <p>You are not logged in</p>
+    <a href="{% url 'login' %}">Log In</a> |
+    <a href="{% url 'signup' %}">Sign Up</a>
+{% endif %} 
+  <
 {% endblock %}

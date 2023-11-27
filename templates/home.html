@@ -1,0 +1,20 @@
+<!-- FILEPATH: /Users/kdh/Documents/developer/Git/zw_4/templates/home.html -->
+
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock title %}
+
+
+{% block content %}
+{% if user.is_authenticated %}
+    <h1>Welcome to the Student Home Page</h1>
+    <p>This is the content for the home page.</p>
+    <!-- <img src="path/to/image.jpg" alt="Image"> -->
+    <p><a href="{% url 'logout' %}">Log Out</a></p>
+{% else %}
+    <p>You are not logged in.</p>
+    <a href="{% url 'login' %}">Log In</a>
+    <a href="{% url 'signup' %}">Sign Up</a>
+{% endif %}
+
+{% endblock content %}

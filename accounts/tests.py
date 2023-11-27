@@ -1,13 +1,17 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
-from django.urls import reverse  # new
+from django.urls import reverse 
 
 
 class UsersManagersTests(TestCase):
-    ...
+    def test_create_user(self):
+        User = get_user_model()
+        user = User.objects.create_user(
+            username="kdh",
+            email="@gmail.com",)
 
 
-class SignupPageTests(TestCase):  # new
+class SignupPageTests(TestCase): 
     def test_url_exists_at_correct_location_signupview(self):
         response = self.client.get("/accounts/signup/")
         self.assertEqual(response.status_code, 200)
@@ -31,3 +35,4 @@ class SignupPageTests(TestCase):  # new
         self.assertEqual(get_user_model().objects.all().count(), 1)
         self.assertEqual(get_user_model().objects.all()[0].username, "testuser")
         self.assertEqual(get_user_model().objects.all()[0].email, "testuser@email.com")
+
