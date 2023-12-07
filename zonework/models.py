@@ -17,7 +17,7 @@ class Evaluation(models.Model):
         ordering = ['created_at']
 
     def __str__(self):
-        return self.descriptionß
+        return self.description
     
     def get_absolute_url(self):
         return reverse('evaluation_detail')
@@ -27,3 +27,8 @@ class Subject(models.Model):
     published_date = models.DateTimeField(blank=True, null=True)
     author = models.CharField(max_length=200)
     
+    def __str__(self):
+        return self.title
+    
+    def get_absolute_url(self):
+        return reverse('subject_detail', args=[str(self.id)])

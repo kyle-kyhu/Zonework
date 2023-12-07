@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
 
 {% block title %}Subject List{% endblock title %}
 
@@ -6,18 +8,58 @@
 {% if user.is_authenticated %}
     <p><a href="{% url 'logout' %}">Log Out</a></p>
 
-    h1>Subject List</h1>
-  <ul>
-    <li>Subject 1</li>
-    <li>Subject 2</li>
-    <li>Subject 3</li>
-    <!-- Add more subjects as needed -->
-  </ul>
-  
+<!-- Here is the main list of subjucts  -->
+    {% for subject in subject_list %}
+    <div class="card">
+        <div class="card-header">
+            <span class="fw-bold">
+                <a href="{% url 'subject_detail' subject.pk %}">{{ subject.title }}</a>
+            </span> &middot; 
+            <span class="text-muted">by {{ subject.author }} | {{ subject.published_date }}</span>
+            <a href="{{ subject.get_absolute_url }}">Keep Learning</a>
+        </div>
+        <div class="card-footer">
+          {% for evaluation in subject.evaluation_set.all %}
+                <tr>
+                    <!-- <td class="eval-rendered-type {% if evaluation.understand %}understand{% elif evaluation.not_yet %}not-yet{% endif %}">
+                        {% if evaluation.understand %}
+                            Understand
+                        {% elif evaluation.not_yet %}
+                            Not Yet
+                        {% endif %}
+                    </td> -->
+                    <!-- <td>
+                        {{ evaluation.description }}
+                    </td>
+                    <td>
+                        {{ evaluation.created_at }}
+                    </td>
+                </tr> -->
+            {% endfor %}
+            {% for evaluation in subject.evaluation_set.all %}
+            <p>
+                <span class="fw-bold">
+                    {% if evaluation.understand %}
+                        understand &middot; 
+                    {% endif %}
+                </span>
+                <span class="fw-bold">
+                    {% if evaluation.not_yet %}
+                        not yet &middot; 
+                    {% endif %}
+                </span>
+                {{ evaluation.evaluation }}  {{ evaluation.description }}
+            </p>
+        {% endfor %}
+        </div>
+    </div>
+    <br />
+    {% endfor %}
+
 {% else %}
     <p>You are not logged in</p>
     <a href="{% url 'login' %}">Log In</a> |
     <a href="{% url 'signup' %}">Sign Up</a>
 {% endif %} 
-  <
+
 {% endblock %}

@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block title %}ZW - {{ subject.title }}{% endblock title %}
+
+{% block content %}
+
+<div class="card">
+    <h5 class="card-header">{{ subject.title }}</h5>
+    <div class="card-body">
+      <h5 class="card-title">Add Notes</h5>
+      <form action="" method="post">
+        {% csrf_token %}
+       <div> 
+        {{ form.description }}
+       </div>
+       <div class="">
+        <button class="btn btn-outline-success" id="eval-button" name="understand" value="1" type="submit">Understand</button>
+        <button class="btn btn-outline-success" id="eval-button" name="not_yet" value="1" type="submit">Not Yet</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+<!-- Here is the count of total evaluations for today -->
+
+<div class="eval-counts">
+    <p>Total Evaluations: {{ subject.evaluation_set.all.count }}</p>
+     <p>
+        Total Evaluations for Today: 
+        <!--create a for loop for all the evaluations from 00:00 to 23:59. -->
+        <!-- the for loop below is not working -->
+        {% for evaluation in subject.evaluation_set.all %}
+            {% if evaluation.created_at.date == date.today %}
+                {{ evaluation }}
+            {% endif %}
+        {% endfor %}
+    </p>
+</div>
+
+<!-- Here is the rendered evaluations -->
+
+<div class="rendered-evaluations">
+
+    <table class="table table-primary">
+        <thead>
+            <tr>
+                <th>Evaluation</th>
+                <th>Description</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for evaluation in subject.evaluation_set.all %}
+                <tr>
+                    <td class="eval-rendered-type 
+                    {% if evaluation.understand %}
+                        understand
+                    {% elif evaluation.not_yet %}
+                        not-yet
+                    {% endif %}">
+                        {% if evaluation.understand %}
+                            Understand
+                        {% elif evaluation.not_yet %}
+                            Not Yet
+                        {% endif %}
+                    </td>
+                    <td>
+                        {{ evaluation.description }}
+                    </td>
+                    <td>
+                        {{ evaluation.created_at }}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <hr>
+</div>
+
+
+
+
+
+<!-- here is the delete and edit buttons -->
+<div>
+{% if subject.student.pk == request.user.pk %}
+    <p>
+    <a href="{% url 'subject_edit' subject.pk %}">Edit</a>
+    <a href="{% url 'subject_delete' subject.pk %}">Delete</a>
+    </p>
+{% endif %}
+    <p>Back to <a href="{% url 'subject_list' %}">All Subjects</a>.</p>
+</div>
+{% endblock content %}

@@ -38,9 +38,13 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # Third-party apps
+    'crispy_forms',
+    'crispy_bootstrap5',
+    'django_browser_reload',
     # Local apps
     'zonework',
     'accounts',
+    'pages',
 ]
 
 MIDDLEWARE = [
@@ -51,6 +55,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "django_browser_reload.middleware.BrowserReloadMiddleware", #for refreshing the page
 ]
 
 ROOT_URLCONF = "django_project.urls"
@@ -133,3 +138,10 @@ AUTH_USER_MODEL = 'accounts.CustomUser'
 # login redirect
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
+
+# crispy forms
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+# password reset
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

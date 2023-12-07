@@ -1,0 +1,34 @@
+body {
+    background-color: #f5f5f5;
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #292b2c;
+    margin: 10px;
+}
+
+/* for the button on the learn tab,  */
+.zw-buttons {
+    display: flex;
+}
+
+/* to render the button on the learn tab */
+#eval-button {
+    display: flex;
+    width: 150px;
+    justify-content: center;
+}
+
+/* here is the css for the eval rendered table */
+.eval-rendered-type {
+    font-weight: bold;
+}
+
+.eval-rendered-type.understand {
+    color: green;
+}
+
+.eval-rendered-type.not-yet {
+    color: red;
+}
