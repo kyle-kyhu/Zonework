@@ -5,26 +5,14 @@ from django.views import View
 from .models import Evaluation, Subject
 from .forms import EvaluationForm
 from django.urls import reverse_lazy
-
-class DashboardView(TemplateView):
-    template_name = 'dashboard.html'
-    model = Evaluation
-
-    # def get_queryset(self):
-    #     return Evaluation.objects.filter(student=self.request.user)
+from django.db.models import Q, Count
+from django.db.models.functions import ExtractWeekDay
+from django.utils import timezone
+from datetime import timedelta, datetime, time
 
 class SubjectListView(ListView):
     template_name = 'subject_list.html'
     model = Subject
-
-'''this was the first attempt to get the evaluation form to work'''
-# class SubjectDetailView(DetailView):
-#     template_name = 'subject_detail.html'
-#     model = Evaluation
-
-#     def get_success_url(self):
-#         return reverse_lazy('home')  # Replace 'home' with the correct URL pattern name
-#     model = Evaluation
 
 class EvaluationGet(LoginRequiredMixin, DetailView):
     template_name = 'subject_detail.html'
@@ -75,3 +63,54 @@ class SubjectDetailView(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         view = EvaluationPost.as_view()
         return view(request, *args, **kwargs)
+    
+
+class SubjectRecapView(LoginRequiredMixin, TemplateView):
+    """This view is a mini recap of the evaluations"""
+    template_name = 'subject_detail.html'
+    model = Subject
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['understand_count'] = Subject.objects.filter(understand=True).count()
+        context['not_yet_count'] = Subject.objects.filter(not_yet=True).count()
+        context['both_count'] = Subject.objects.filter(Q(understand=True) & Q(not_yet=True)).count()
+
+        # Get the current date
+        today = timezone.now().date()
+
+        # Get the datetime for the start and end of today
+        start_of_today = timezone.make_aware(datetime.combine(today, time.min))
+        end_of_today = timezone.make_aware(datetime.combine(today, time.max))
+
+        # Count 'both_count' within today's calendar day
+        context['both_count_today'] = Subject.objects.filter(
+            Q(understand=True) & Q(not_yet=True) & Q(created_at__range=(start_of_today, end_of_today))
+        ).count()
+
+        # Count the evaluations for each day of the week
+        evaluations_per_day = Subject.objects.annotate(
+            day_of_week=ExtractWeekDay('created_at')
+        ).values('day_of_week').annotate(count=Count('id')).order_by('day_of_week')
+
+        context['evaluations_per_day'] = {
+            'Monday': 0,
+            'Tuesday': 0,
+            'Wednesday': 0,
+            'Thursday': 0,
+            'Friday': 0,
+            'Saturday': 0,
+            'Sunday': 0,
+        }
+
+        days_of_week = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+
+        for item in evaluations_per_day:
+            context['evaluations_per_day'][days_of_week[item['day_of_week'] - 1]] = item['count']
+
+        return context
+
+    
+class DashboardView(TemplateView):
+    template_name = 'dashboard.html'
+    model = Subject

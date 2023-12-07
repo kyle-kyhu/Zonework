@@ -15,7 +15,7 @@
        <div> 
         {{ form.description }}
        </div>
-       <div class="">
+       <div class="zw-buttons">
         <button class="btn btn-outline-success" id="eval-button" name="understand" value="1" type="submit">Understand</button>
         <button class="btn btn-outline-success" id="eval-button" name="not_yet" value="1" type="submit">Not Yet</button>
         </div>
@@ -28,17 +28,12 @@
 
 <div class="eval-counts">
     <p>Total Evaluations: {{ subject.evaluation_set.all.count }}</p>
-     <p>
-        Total Evaluations for Today: 
-        <!--create a for loop for all the evaluations from 00:00 to 23:59. -->
-        <!-- the for loop below is not working -->
-        {% for evaluation in subject.evaluation_set.all %}
-            {% if evaluation.created_at.date == date.today %}
-                {{ evaluation }}
-            {% endif %}
-        {% endfor %}
-    </p>
+    <p>Total Evaluations for Today: {{ both_count_today }}</p>
+    <p> Total Understands: {{ understand_count }}</p>
+    <p> Total Not Yets: {{ not_yet_count }}</p>
+
 </div>
+
 
 <!-- Here is the rendered evaluations -->
 
