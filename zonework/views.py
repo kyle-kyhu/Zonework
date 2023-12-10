@@ -8,21 +8,14 @@ from django.urls import reverse_lazy
 from django.db.models import Q, Count
 from django.db.models.functions import ExtractWeekDay
 from django.utils import timezone
-from datetime import timedelta, datetime, time
+from datetime import datetime, time, timedelta
+from django.shortcuts import render, get_object_or_404
 
 class SubjectListView(ListView):
     template_name = 'subject_list.html'
     model = Subject
 
-class EvaluationGet(LoginRequiredMixin, DetailView):
-    template_name = 'subject_detail.html'
-    model = Subject
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['form'] = EvaluationForm()
-        return context
-    
 class EvaluationPost(SingleObjectMixin, FormView):
     template_name = 'subject_detail.html'
     model = Subject
@@ -54,8 +47,42 @@ class EvaluationPost(SingleObjectMixin, FormView):
         
     def get_success_url(self):
         return reverse_lazy('subject_detail', kwargs={'pk': self.object.pk})
+    
 
-class SubjectDetailView(LoginRequiredMixin, View):
+
+class EvaluationGet(LoginRequiredMixin, DetailView):
+    template_name = 'subject_detail.html'
+    model = Subject
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = EvaluationForm()
+        return context
+    
+    """uncomment this code and the understand_count and not_yet_count will work but the form will not work"""
+    '''I don't understand why this is happening'''
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     context['understand_count'] = Evaluation.objects.filter(understand=True).count()
+    #     context['not_yet_count'] = Evaluation.objects.filter(not_yet=True).count()
+    #     context['both_count'] = Evaluation.objects.filter(Q(understand=True) & Q(not_yet=True)).count()
+
+    #     # Get the current date
+    #     today = timezone.now().date()
+
+    #     # Get the datetime for the start and end of today
+    #     start_of_today = timezone.make_aware(datetime.combine(today, time.min))
+    #     end_of_today = timezone.make_aware(datetime.combine(today, time.max))
+
+    #     # Count 'both_count' within today's calendar day
+    #     context['both_count_today'] = Evaluation.objects.filter(
+    #         Q(understand=True) & Q(not_yet=True) & Q(created_at__range=(start_of_today, end_of_today))
+    #     ).count()
+
+    #     return context
+
+
+class SubjectDetailView(LoginRequiredMixin, DetailView, View):
     def get(self, request, *args, **kwargs):
         view = EvaluationGet.as_view()
         return view(request, *args, **kwargs)
@@ -63,18 +90,21 @@ class SubjectDetailView(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         view = EvaluationPost.as_view()
         return view(request, *args, **kwargs)
-    
 
-class SubjectRecapView(LoginRequiredMixin, TemplateView):
-    """This view is a mini recap of the evaluations"""
-    template_name = 'subject_detail.html'
+
+
+class SubjectRecapView(DetailView):
+    """This classed based view is a mini recap of the evaluations.
+    This view is not working."""
     model = Subject
+    template_name = 'subject_detail.html'
+    
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['understand_count'] = Subject.objects.filter(understand=True).count()
-        context['not_yet_count'] = Subject.objects.filter(not_yet=True).count()
-        context['both_count'] = Subject.objects.filter(Q(understand=True) & Q(not_yet=True)).count()
+        context['understand_count'] = Evaluation.objects.filter(understand=True).count()
+        context['not_yet_count'] = Evaluation.objects.filter(not_yet=True).count()
+        context['both_count'] = Evaluation.objects.filter(Q(understand=True) & Q(not_yet=True)).count()
 
         # Get the current date
         today = timezone.now().date()
@@ -84,33 +114,65 @@ class SubjectRecapView(LoginRequiredMixin, TemplateView):
         end_of_today = timezone.make_aware(datetime.combine(today, time.max))
 
         # Count 'both_count' within today's calendar day
-        context['both_count_today'] = Subject.objects.filter(
+        context['both_count_today'] = Evaluation.objects.filter(
             Q(understand=True) & Q(not_yet=True) & Q(created_at__range=(start_of_today, end_of_today))
         ).count()
 
-        # Count the evaluations for each day of the week
-        evaluations_per_day = Subject.objects.annotate(
-            day_of_week=ExtractWeekDay('created_at')
-        ).values('day_of_week').annotate(count=Count('id')).order_by('day_of_week')
-
-        context['evaluations_per_day'] = {
-            'Monday': 0,
-            'Tuesday': 0,
-            'Wednesday': 0,
-            'Thursday': 0,
-            'Friday': 0,
-            'Saturday': 0,
-            'Sunday': 0,
-        }
-
-        days_of_week = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
-
-        for item in evaluations_per_day:
-            context['evaluations_per_day'][days_of_week[item['day_of_week'] - 1]] = item['count']
-
         return context
 
+def subject_mini_recap(request,pk):
+    """Here is the same code in funchtion based view."""
+    subject = get_object_or_404(Subject, pk=pk)
+
+    understand_count = Evaluation.objects.filter(understand=True).count()
+    not_yet_count = Evaluation.objects.filter(not_yet=True).count()
+    both_count = Evaluation.objects.filter(Q(understand=True) & Q(not_yet=True)).count()
+
+    # Get the current date
+    today = timezone.now().date()
+
+    # Get the datetime for the start and end of today
+    start_of_today = timezone.make_aware(datetime.combine(today, time.min))
+    end_of_today = timezone.make_aware(datetime.combine(today, time.max))
+
+    # Count 'both_count' within today's calendar day
+    both_count_today = Evaluation.objects.filter(
+        Q(understand=True) & Q(not_yet=True) & Q(created_at__range=(start_of_today, end_of_today))
+    ).count()
+
+    context = {
+        'subject': subject,
+        'understand_count': understand_count,
+        'not_yet_count': not_yet_count,
+        'both_count': both_count,
+        'both_count_today': both_count_today,
+    }
+
+    return render(request, 'subject_detail.html', context)
     
 class DashboardView(TemplateView):
+    """this is the code the the dashboard tab"""
     template_name = 'dashboard.html'
-    model = Subject
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # calculate the number of evaluations for each day of the week
+        today = datetime.now().date()
+        date_range = [timezone.make_aware(datetime.combine(today - timedelta(days=x), time.min)) for x in range(7)]
+
+        # Query to get the count of evaluations for each day
+        evaluations_by_day = Evaluation.objects.filter(
+            created_at__range=(date_range[-1], date_range[0])
+        ).annotate(
+            day=ExtractWeekDay('created_at')
+        ).values('day').annotate(
+            count=Count('id')
+        ).order_by('day')
+
+        # extract the label and scores for the chart
+        labels = [date.strftime('%Y-%m-%d') for date in date_range]
+        scores = [evaluation['count'] for evaluation in evaluations_by_day]
+
+        context['chartData'] = {'labels': labels, 'scores': scores} 
+        return context
