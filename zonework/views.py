@@ -1,3 +1,4 @@
+from datetime import datetime, time, timedelta
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView, ListView, DetailView, FormView
 from django.views.generic.detail import SingleObjectMixin
@@ -10,6 +11,7 @@ from django.db.models.functions import ExtractWeekDay
 from django.utils import timezone
 from datetime import datetime, time, timedelta
 from django.shortcuts import render, get_object_or_404
+from django.db.models.functions import TruncDate
 
 class SubjectListView(ListView):
     template_name = 'subject_list.html'
@@ -158,21 +160,37 @@ class DashboardView(TemplateView):
         context = super().get_context_data(**kwargs)
 
         # calculate the number of evaluations for each day of the week
-        today = datetime.now().date()
-        date_range = [timezone.make_aware(datetime.combine(today - timedelta(days=x), time.min)) for x in range(7)]
+        today = datetime.now()#.date()
+        print('today', today)
+        # get the date seven days ago
+        seven_days_ago = today - timedelta(days=7)
+        print('seven_days_ago', seven_days_ago)
+        
+        #print('date_range', date_range)
 
-        # Query to get the count of evaluations for each day
-        evaluations_by_day = Evaluation.objects.filter(
-            created_at__range=(date_range[-1], date_range[0])
-        ).annotate(
-            day=ExtractWeekDay('created_at')
-        ).values('day').annotate(
-            count=Count('id')
-        ).order_by('day')
+        # Query to get daily total counts of records in Evaluation where created_at is in the last 7 days, and count the number of records for each day, resulting in a list of dictionaries,
+        # each dictionary containing the day (in date format) and the count of records for that day:
+        weekly_eval = Evaluation.objects.filter(
+                            created_at__range=(seven_days_ago, today)
+                        ).annotate(
+                            date=TruncDate('created_at')  # Truncate to date
+                        ).values('date').annotate(
+                            count=Count('id')
+                        ).order_by('date')
+        
+        dates = [item['date'] for item in weekly_eval]
+        # convert dates to string format:
+        dates = [date.strftime('%Y-%m-%d') for date in dates]
+        
+        evals = [item['count'] for item in weekly_eval]
+        
+        print('dates', dates)
+        print('evals', evals)
 
-        # extract the label and scores for the chart
-        labels = [date.strftime('%Y-%m-%d') for date in date_range]
-        scores = [evaluation['count'] for evaluation in evaluations_by_day]
+        #print('weekly_eval', weekly_eval)
 
-        context['chartData'] = {'labels': labels, 'scores': scores} 
+        context['chartData'] = {
+            'labels': dates,
+            'evals': evals,
+        }
         return context
