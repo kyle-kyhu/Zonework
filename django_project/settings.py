@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'zonework',
     'accounts',
     'pages',
+    'scraper',
 ]
 
 MIDDLEWARE = [

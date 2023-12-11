@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Scraper{% endblock title %}
+
+{% block content %}
+<body>
+    <h2>Scraper</h2>
+
+    <form method="post" action="{% url 'add_video' %}">
+        {% csrf_token %}
+        <label for="url">YouTube URL:</label>
+        <input type="text" name="url" required>
+        <button type="submit">Scrape</button>
+    </form>
+
+    <div class="card">
+        <p>Title: {{ video.title }}</p>
+        <p>Description: {{ video.description }}</p>
+        <p>Chapters: {{ video.chapter }}</p>
+    </div>
+</body>
+
+
+{% endblock content %}
