@@ -159,66 +159,55 @@ class DashboardView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        # calculate the number of evaluations for each day of the week
-        today = datetime.now()#.date()
-        print('today', today)
-        # get the date seven days ago
+        today = datetime.now()
         seven_days_ago = today - timedelta(days=7)
-        print('seven_days_ago', seven_days_ago)
-        
-        #print('date_range', date_range)
 
-        # Query to get daily total counts of records in Evaluation where created_at is in the last 7 days, and count the number of records for each day, resulting in a list of dictionaries,
-        # each dictionary containing the day (in date format) and the count of records for that day:
         weekly_eval = Evaluation.objects.filter(
-                            created_at__range=(seven_days_ago, today)
-                        ).annotate(
-                            date=TruncDate('created_at')  # Truncate to date
-                        ).values('date').annotate(
-                            count=Count('id')
-                        ).order_by('date')
+            created_at__range=(seven_days_ago, today)
+        ).annotate(
+            date=TruncDate('created_at')
+        ).values('date').annotate(
+            count=Count('id')
+        ).order_by('date')
         
         weekly_understand_eval = Evaluation.objects.filter(
-                            created_at__range=(seven_days_ago, today)
-                        ).annotate(
-                            date=TruncDate('created_at')  
-                        ).values('date').annotate(
-                            count=Count('id', filter=Q(understand=True))
-                        ).order_by('date')
+            created_at__range=(seven_days_ago, today)
+        ).annotate(
+            date=TruncDate('created_at')  
+        ).values('date').annotate(
+            count=Count('id', filter=Q(understand=True))
+        ).order_by('date')
         
         weekly_not_yet_eval = Evaluation.objects.filter(
-                            created_at__range=(seven_days_ago, today)
-                        ).annotate(
-                            date=TruncDate('created_at')  
-                        ).values('date').annotate(
-                            count=Count('id', filter=Q(not_yet=True))
-                        ).order_by('date')
-        
-
+            created_at__range=(seven_days_ago, today)
+        ).annotate(
+            date=TruncDate('created_at')  
+        ).values('date').annotate(
+            count=Count('id', filter=Q(not_yet=True))
+        ).order_by('date')
         
         dates = [item['date'] for item in weekly_eval]
-        dates = [item['date'] for item in weekly_understand_eval]
-        dates = [item['date'] for item in weekly_not_yet_eval]
+        evals = [item['count'] for item in weekly_eval]
+        
+        understand_dates = [item['date'] for item in weekly_understand_eval]
+        understand_evals = [item['count'] for item in weekly_understand_eval]
+        
+        not_yet_dates = [item['date'] for item in weekly_not_yet_eval]
+        not_yet_evals = [item['count'] for item in weekly_not_yet_eval]
+
         # convert dates to string format:
         dates = [date.strftime('%Y-%m-%d') for date in dates]
-        
-        evals = [item['count'] for item in weekly_eval]
-        understand_evals = [item['count'] for item in weekly_understand_eval]
-        not_yet_evals = [item['count'] for item in weekly_not_yet_eval]
-         
-        print('dates', dates)
-        print('evals', evals)
-        print('understand_evals', understand_evals)
-        print('not_yet_evals', not_yet_evals)
-        # print('weekly_understand_eval', weekly_understand_eval)
-        # print('weekly_not_yet_eval', weekly_not_yet_eval)
-
-
-        #print('weekly_eval', weekly_eval)
+        understand_dates = [date.strftime('%Y-%m-%d') for date in understand_dates]
+        not_yet_dates = [date.strftime('%Y-%m-%d') for date in not_yet_dates]
 
         context['chartData'] = {
             'labels': dates,
             'evals': evals,
+            'understand_dates': understand_dates,
+            'understand_evals': understand_evals,
+            'not_yet_dates': not_yet_dates,
+            'not_yet_evals': not_yet_evals,
         }
         return context
+
     
