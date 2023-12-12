@@ -6,7 +6,7 @@ from django.views import View
 from .models import Evaluation, Subject
 from .forms import EvaluationForm
 from django.urls import reverse_lazy
-from django.db.models import Q, Count
+from django.db.models import Q, Count, Sum
 from django.db.models.functions import ExtractWeekDay
 from django.utils import timezone
 from datetime import datetime, time, timedelta
@@ -153,7 +153,7 @@ def subject_mini_recap(request,pk):
     return render(request, 'subject_detail.html', context)
     
 class DashboardView(TemplateView):
-    """this is the code the the dashboard tab"""
+    """this is the code for the dashboard tab"""
     template_name = 'dashboard.html'
     
     def get_context_data(self, **kwargs):
@@ -178,14 +178,41 @@ class DashboardView(TemplateView):
                             count=Count('id')
                         ).order_by('date')
         
+        weekly_understand_eval = Evaluation.objects.filter(
+                            created_at__range=(seven_days_ago, today)
+                        ).annotate(
+                            date=TruncDate('created_at')  
+                        ).values('date').annotate(
+                            count=Count('id', filter=Q(understand=True))
+                        ).order_by('date')
+        
+        weekly_not_yet_eval = Evaluation.objects.filter(
+                            created_at__range=(seven_days_ago, today)
+                        ).annotate(
+                            date=TruncDate('created_at')  
+                        ).values('date').annotate(
+                            count=Count('id', filter=Q(not_yet=True))
+                        ).order_by('date')
+        
+
+        
         dates = [item['date'] for item in weekly_eval]
+        dates = [item['date'] for item in weekly_understand_eval]
+        dates = [item['date'] for item in weekly_not_yet_eval]
         # convert dates to string format:
         dates = [date.strftime('%Y-%m-%d') for date in dates]
         
         evals = [item['count'] for item in weekly_eval]
-        
+        understand_evals = [item['count'] for item in weekly_understand_eval]
+        not_yet_evals = [item['count'] for item in weekly_not_yet_eval]
+         
         print('dates', dates)
         print('evals', evals)
+        print('understand_evals', understand_evals)
+        print('not_yet_evals', not_yet_evals)
+        # print('weekly_understand_eval', weekly_understand_eval)
+        # print('weekly_not_yet_eval', weekly_not_yet_eval)
+
 
         #print('weekly_eval', weekly_eval)
 
@@ -194,3 +221,4 @@ class DashboardView(TemplateView):
             'evals': evals,
         }
         return context
+    
