@@ -16,6 +16,7 @@ body {
 /* to render the button on the learn tab */
 #eval-button {
     display: flex;
+    margin: 20px;
     width: 150px;
     justify-content: center;
 }
@@ -31,4 +32,10 @@ body {
 
 .eval-rendered-type.not-yet {
     color: red;
+}
+
+#zw-card {
+    width: 18rem;
+    display: flex;
+    background-color: blue;
 }
