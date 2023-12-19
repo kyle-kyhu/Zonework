@@ -17,8 +17,17 @@ class AddVideoView(View):
             response = requests.get(url)
             soup = BeautifulSoup(response.text, 'html.parser')
 
+            # save the soup object
+            with open('scraper/data/soup.html', 'w') as f:
+                f.write(str(soup))
+
+
+
             title = soup.find('meta', property='og:title')['content']
             description = soup.find('meta', property='og:description')['content']
+            chapter = soup.find('yt-attributed-string', class_='style-scope ytd-text-inline-expander')
+            #chapter = soup.find('meta', property='yt-core-attributed-string')
+            print(chapter)
 
             # Save the scraped data
             video, created = Video.objects.update_or_create(
